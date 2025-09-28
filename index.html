@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Affirmation – En Daglig Inspiration</title>
+    <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html, body {
@@ -17,7 +18,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: flex-start; /* overskrift øverst */
             padding: 40px 20px;
             text-align: center;
         }
@@ -33,11 +34,11 @@
         }
 
         .content {
-            flex: 1;
+            flex: 1; /* fylder resten af skærmen */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: center; /* centrer knap og tekst */
         }
 
         h2 {
@@ -73,12 +74,7 @@
             transition: transform 0.2s, background-color 0.2s;
         }
 
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        button:hover:not(:disabled) {
+        button:hover {
             transform: scale(1.05);
             background-color: #FFE58A;
         }
@@ -93,12 +89,12 @@
             font-weight: 600;
         }
 
-        #inspirationImage {
-            max-width: 90%;
-            height: auto;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        /* Skjult besøgs-tæller */
+        #visitorCount {
+            position: fixed;
+            bottom: 5px;
+            left: 5px;
+            display: none;
         }
     </style>
 </head>
@@ -109,17 +105,25 @@
     </header>
 
     <div class="content">
-        <img id="inspirationImage" src="" alt="Daglig inspiration">
-        <button id="affirmBtn" onclick="showAffirmation()">Vis dagens selvreflektion</button>
+        <button onclick="showAffirmation()">Vis dagens selvreflektion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
     </div>
 
+    <p id="visitorCount"></p>
+
     <script>
-        // Tilfældige billeder (100 forskellige)
-        const randomImageNumber = Math.floor(Math.random() * 100) + 1;
-        const imageUrl = `https://source.unsplash.com/600x400/?nature,smile,happy&sig=${randomImageNumber}`;
-        document.getElementById("inspirationImage").src = imageUrl;
+        // Skjult besøgs-tæller
+        function updateVisitorCount() {
+            fetch('https://api.countapi.xyz/hit/sozar202/microchange')
+            .then(res => res.json())
+            .then(res => {
+                document.getElementById('visitorCount').textContent = res.value;
+                console.log("Besøg opdateret: " + res.value);
+            })
+            .catch(err => console.error(err));
+        }
+        updateVisitorCount();
 
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
@@ -173,27 +177,12 @@
             ["Forbered dig på god søvn", "Sørg for mørkt og roligt soveområde", "Lav kort afslapningsritual", "Skriv dagens læring", "Lyt til afslappende musik"]
         ];
 
-        const btn = document.getElementById("affirmBtn");
-
         function showAffirmation() {
-            const now = new Date();
-            const hour = now.getHours();
+            const hour = new Date().getHours();
             const affirmationElement = document.getElementById("affirmation");
             let affirmation, todos;
 
-            // Definer nøgle til morning/afternoon tæller
-            const period = (hour < 12) ? "morning" : "evening";
-            const todayKey = "affirmClicks_" + period + "_" + now.toDateString();
-            let clicks = parseInt(localStorage.getItem(todayKey)) || 0;
-
-            if (clicks >= 3) {
-                alert("Du har allerede brugt dagens maksimale antal tryk for denne periode. Prøv igen senere.");
-                btn.disabled = true;
-                return;
-            }
-
-            // Vælg affirmation
-            if (period === "morning") {
+            if (hour < 12) {
                 const idx = Math.floor(Math.random() * morningAffirmations.length);
                 affirmation = morningAffirmations[idx];
                 todos = getRandomTodos(morningTodos[idx]);
@@ -214,11 +203,6 @@
                 li.textContent = "⭐ " + todo;
                 ul.appendChild(li);
             });
-
-            // Opdater tæller
-            clicks++;
-            localStorage.setItem(todayKey, clicks);
-            if (clicks >= 3) btn.disabled = true;
         }
 
         function getRandomTodos(todoArray) {
@@ -226,14 +210,6 @@
             copy.sort(() => Math.random() - 0.5);
             return copy.slice(0, 3);
         }
-
-        // Ved indlæsning: deaktiver knap hvis max allerede nået
-        const nowCheck = new Date();
-        const periodCheck = (nowCheck.getHours() < 12) ? "morning" : "evening";
-        const keyCheck = "affirmClicks_" + periodCheck + "_" + nowCheck.toDateString();
-        const clicksCheck = parseInt(localStorage.getItem(keyCheck)) || 0;
-        if (clicksCheck >= 3) btn.disabled = true;
-
     </script>
 </body>
 </html>
