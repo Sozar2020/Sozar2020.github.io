@@ -20,14 +20,30 @@
             text-align: center;
         }
 
+        /* Tekst og figur */
         h1 {
+            font-size: 36px; /* Overskrift */
             margin-bottom: 20px;
             color: #0D47A1; /* mørk blå */
         }
 
+        p, li {
+            font-size: 20px; /* Tekst og liste */
+            margin: 10px 0;
+        }
+
+        ul {
+            list-style: none; /* fjerner standard punktform */
+            text-align: left;
+            display: inline-block;
+            margin-top: 10px;
+            padding-left: 0;
+        }
+
+        /* Knapper */
         button {
-            padding: 12px 25px;
-            font-size: 18px;
+            padding: 14px 30px; /* Størrelse på knap */
+            font-size: 22px;    /* Tekst i knap */
             margin: 15px 0;
             border: none;
             border-radius: 8px;
@@ -43,29 +59,22 @@
             background-color: #FFE58A;
         }
 
-        p {
-            font-size: 18px;
-            margin: 10px 0;
+        /* Farver for morgen/aften tekst */
+        .morning {
+            color: #1E88E5; /* blå */
+            font-weight: 600;
         }
 
-        ul {
-            list-style: none; /* fjerner standard punktform */
-            text-align: left;
-            display: inline-block;
-            margin-top: 10px;
-            padding-left: 0;
-        }
-
-        li {
-            font-size: 18px;
-            margin: 6px 0;
+        .evening {
+            color: #6A1B9A; /* lilla */
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <h1>Affirmation App</h1>
     <button onclick="showAffirmation()">Vis dagens affirmation</button>
-    <p id="affirmation">Tryk på knappen for at få din affirmation 🌅/🌙</p>
+    <p id="affirmation">Tryk på knappen for at få din affirmation</p>
     <ul id="todos"></ul>
 
     <script>
@@ -123,24 +132,28 @@
 
         function showAffirmation() {
             const hour = new Date().getHours();
+            const affirmationElement = document.getElementById("affirmation");
             let affirmation, todos;
+
             if (hour < 12) {
                 const idx = Math.floor(Math.random() * morningAffirmations.length);
                 affirmation = morningAffirmations[idx];
                 todos = getRandomTodos(morningTodos[idx]);
-                document.getElementById("affirmation").textContent = "🌅 Morgen affirmation: " + affirmation;
+                affirmationElement.textContent = "Morgen affirmation: " + affirmation;
+                affirmationElement.className = "morning";
             } else {
                 const idx = Math.floor(Math.random() * eveningAffirmations.length);
                 affirmation = eveningAffirmations[idx];
                 todos = getRandomTodos(eveningTodos[idx]);
-                document.getElementById("affirmation").textContent = "🌙 Aften affirmation: " + affirmation;
+                affirmationElement.textContent = "Aften affirmation: " + affirmation;
+                affirmationElement.className = "evening";
             }
 
             const ul = document.getElementById("todos");
             ul.innerHTML = "";
             todos.forEach(todo => {
                 const li = document.createElement("li");
-                li.textContent = "⭐ " + todo; // stjerne foran, ingen punktum
+                li.textContent = "⭐ " + todo;
                 ul.appendChild(li);
             });
         }
@@ -153,3 +166,4 @@
     </script>
 </body>
 </html>
+
