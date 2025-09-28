@@ -27,6 +27,21 @@
             width: 100%;
         }
 
+        .pingvin-container {
+    width: 300px;         /* vælg selv bredden */
+    aspect-ratio: 16 / 9; /* holder formatet */
+    overflow: hidden;
+    border-radius: 12px;  /* valgfrit, giver bløde hjørner */
+    margin-bottom: 20px;  /* skubber knappen lidt ned */
+}
+
+.pingvin-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* beskærer billedet uden at strække */
+}
+
+
         h1 {
             font-size: 38px;
             color: #0D47A1;
@@ -99,9 +114,10 @@
     </header>
 
     <div class="content">
-    
-    <img src="billede4.png" alt="Min søde pingvin" style="width:auto; height:auto; max-width:100%;"/>
-            
+         <div class="pingvin-container">
+        <img src="billede4.png" alt="Min søde pingvin">
+    </div>
+                
         <button onclick="showAffirmation()">Vis dagens selvreflektion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
