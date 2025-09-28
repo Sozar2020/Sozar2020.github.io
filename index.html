@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 40px 20px;
+            padding: 20px 20px; /* reduceret padding for at spare lodret plads */
             text-align: center;
         }
 
@@ -33,19 +33,19 @@
             margin: 0 0 20px 0;
         }
 
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px; /* lidt mindre for at spare plads */
+            color: #1E88E5;
+            font-weight: 400;
+        }
+
         .content {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-        }
-
-        h2 {
-            font-size: 20px;
-            margin-bottom: 30px;
-            color: #1E88E5;
-            font-weight: 400;
+            justify-content: flex-start; /* flytter indholdet op */
+            margin-top: -100px; /* trækker indholdet ca. 10 cm op */
         }
 
         p, li {
@@ -89,7 +89,6 @@
             font-weight: 600;
         }
 
-             
     </style>
 </head>
 <body>
@@ -99,15 +98,12 @@
     </header>
 
     <div class="content">
-        
         <button onclick="showAffirmation()">Vis dagens selvreflektion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
     </div>
 
-
     <script>
-
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
             "Jeg vælger at være stærk og positiv.",
