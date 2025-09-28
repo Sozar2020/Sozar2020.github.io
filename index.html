@@ -27,12 +27,22 @@
             width: 100%;
         }
 
+          .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* ændret fra center til flex-start */
+            margin-top: 5px; /* juster efter behov */
+            }
+
         .pingvin-container {
-    width: 300px;         /* vælg selv bredden */
-    aspect-ratio: 9 / 16; /* holder formatet */
+    width: 300px;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: 12px;  /* valgfrit, giver bløde hjørner */
-    margin-bottom: 10px 0 20px 0;  /* skubber knappen lidt ned */
+    border-radius: 12px;
+    margin-bottom: 20px; /* afstand til knappen under */
+    margin-top: 5px; /* lidt ekstra justering, hvis nødvendigt */
 }
 
 .pingvin-container img {
@@ -48,13 +58,7 @@
             margin: 0 0 20px 0;
         }
 
-        .content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+      
 
         h2 {
             font-size: 20px;
