@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>MicroChange</title>
+    <title>MicroChange – Daglig Inspiration</title>
     <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -13,21 +13,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* overskrift øverst */
+            justify-content: center; /* centrer alt vertikalt */
             min-height: 100vh;
             margin: 0;
-            padding: 40px 20px 20px 20px; /* mere top-padding */
+            padding: 20px;
             text-align: center;
         }
 
-        /* Overskrift */
         h1 {
             font-size: 38px;
             margin-bottom: 10px;
             color: #0D47A1;
         }
 
-        /* Underoverskrift */
         h2 {
             font-size: 20px;
             margin-bottom: 30px;
@@ -35,7 +33,6 @@
             font-weight: 400;
         }
 
-        /* Tekst og liste */
         p, li {
             font-size: 20px;
             margin: 10px 0;
@@ -49,7 +46,6 @@
             padding-left: 0;
         }
 
-        /* Knapper */
         button {
             padding: 14px 30px;
             font-size: 22px;
@@ -68,7 +64,6 @@
             background-color: #FFE58A;
         }
 
-        /* Farver for morgen/aften tekst */
         .morning {
             color: #1E88E5;
             font-weight: 600;
@@ -79,29 +74,35 @@
             font-weight: 600;
         }
 
-        /* Besøgs-tæller */
+        /* Skjult besøgs-tæller */
         #visitorCount {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #333;
+            position: fixed;
+            bottom: 5px;
+            left: 5px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>MicroChange</h1>
-    <h2>Små Skridt, Store Resultater</h2>
+    <h1>MicroChange – Små Skridt, Store Resultater</h1>
+    <h2>Din daglige inspiration og refleksion</h2>
     <button onclick="showAffirmation()">Vis dagens inspiration</button>
     <p id="affirmation">Tryk på knappen for at få din inspiration</p>
     <ul id="todos"></ul>
-    <p id="visitorCount">Besøg på siden: <span id="count">0</span></p>
+    <p id="visitorCount"></p>
 
     <script>
-        // CountAPI besøgs-tæller
-        fetch('https://api.countapi.xyz/hit/sozar202/microchange')
-          .then(res => res.json())
-          .then(res => {
-            document.getElementById('count').textContent = res.value;
-          });
+        // Opdater skjult besøgs-tæller
+        function updateVisitorCount() {
+            fetch('https://api.countapi.xyz/hit/sozar202/microchange')
+            .then(res => res.json())
+            .then(res => {
+                document.getElementById('visitorCount').textContent = res.value;
+                console.log("Besøg opdateret: " + res.value);
+            })
+            .catch(err => console.error(err));
+        }
+        updateVisitorCount();
 
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
@@ -164,13 +165,13 @@
                 const idx = Math.floor(Math.random() * morningAffirmations.length);
                 affirmation = morningAffirmations[idx];
                 todos = getRandomTodos(morningTodos[idx]);
-                affirmationElement.textContent = "Morgen inspiration: " + affirmation;
+                affirmationElement.textContent = "Morgeninspiration: " + affirmation;
                 affirmationElement.className = "morning";
             } else {
                 const idx = Math.floor(Math.random() * eveningAffirmations.length);
                 affirmation = eveningAffirmations[idx];
                 todos = getRandomTodos(eveningTodos[idx]);
-                affirmationElement.textContent = "Aften inspiration: " + affirmation;
+                affirmationElement.textContent = "Afteninspiration: " + affirmation;
                 affirmationElement.className = "evening";
             }
 
