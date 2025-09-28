@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Affirmation App</title>
+    <title>MicroChange</title>
     <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -13,27 +13,36 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start; /* overskrift øverst */
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px 20px 20px; /* mere top-padding */
             text-align: center;
         }
 
-        /* Tekst og figur */
+        /* Overskrift */
         h1 {
-            font-size: 36px; /* Overskrift */
-            margin-bottom: 20px;
-            color: #0D47A1; /* mørk blå */
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #0D47A1;
         }
 
+        /* Underoverskrift */
+        h2 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #1E88E5;
+            font-weight: 400;
+        }
+
+        /* Tekst og liste */
         p, li {
-            font-size: 20px; /* Tekst og liste */
+            font-size: 20px;
             margin: 10px 0;
         }
 
         ul {
-            list-style: none; /* fjerner standard punktform */
+            list-style: none;
             text-align: left;
             display: inline-block;
             margin-top: 10px;
@@ -42,13 +51,13 @@
 
         /* Knapper */
         button {
-            padding: 14px 30px; /* Størrelse på knap */
-            font-size: 22px;    /* Tekst i knap */
+            padding: 14px 30px;
+            font-size: 22px;
             margin: 15px 0;
             border: none;
             border-radius: 8px;
-            background-color: #FFD966; /* måne-gul */
-            color: #0D47A1; /* mørk blå tekst */
+            background-color: #FFD966;
+            color: #0D47A1;
             cursor: pointer;
             font-weight: 600;
             transition: transform 0.2s, background-color 0.2s;
@@ -61,23 +70,39 @@
 
         /* Farver for morgen/aften tekst */
         .morning {
-            color: #1E88E5; /* blå */
+            color: #1E88E5;
             font-weight: 600;
         }
 
         .evening {
-            color: #6A1B9A; /* lilla */
+            color: #6A1B9A;
             font-weight: 600;
+        }
+
+        /* Besøgs-tæller */
+        #visitorCount {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>Affirmation App</h1>
-    <button onclick="showAffirmation()">Vis dagens affirmation</button>
-    <p id="affirmation">Tryk på knappen for at få din affirmation</p>
+    <h1>MicroChange</h1>
+    <h2>Små Skridt, Store Resultater</h2>
+    <button onclick="showAffirmation()">Vis dagens inspiration</button>
+    <p id="affirmation">Tryk på knappen for at få din inspiration</p>
     <ul id="todos"></ul>
+    <p id="visitorCount">Besøg på siden: <span id="count">0</span></p>
 
     <script>
+        // CountAPI besøgs-tæller
+        fetch('https://api.countapi.xyz/hit/sozar202/microchange')
+          .then(res => res.json())
+          .then(res => {
+            document.getElementById('count').textContent = res.value;
+          });
+
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
             "Jeg vælger at være stærk og positiv.",
@@ -139,13 +164,13 @@
                 const idx = Math.floor(Math.random() * morningAffirmations.length);
                 affirmation = morningAffirmations[idx];
                 todos = getRandomTodos(morningTodos[idx]);
-                affirmationElement.textContent = "Morgen affirmation: " + affirmation;
+                affirmationElement.textContent = "Morgen inspiration: " + affirmation;
                 affirmationElement.className = "morning";
             } else {
                 const idx = Math.floor(Math.random() * eveningAffirmations.length);
                 affirmation = eveningAffirmations[idx];
                 todos = getRandomTodos(eveningTodos[idx]);
-                affirmationElement.textContent = "Aften affirmation: " + affirmation;
+                affirmationElement.textContent = "Aften inspiration: " + affirmation;
                 affirmationElement.className = "evening";
             }
 
@@ -166,4 +191,3 @@
     </script>
 </body>
 </html>
-
