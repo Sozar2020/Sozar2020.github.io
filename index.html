@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 20px 20px; /* reduceret padding for at spare lodret plads */
+            padding: 40px 20px;
             text-align: center;
         }
 
@@ -33,19 +33,19 @@
             margin: 0 0 20px 0;
         }
 
-        h2 {
-            font-size: 20px;
-            margin-bottom: 20px; /* lidt mindre for at spare plads */
-            color: #1E88E5;
-            font-weight: 400;
-        }
-
         .content {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* flytter indholdet op */
-            margin-top: -100px; /* trækker indholdet ca. 10 cm op */
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #1E88E5;
+            font-weight: 400;
         }
 
         p, li {
@@ -89,21 +89,69 @@
             font-weight: 600;
         }
 
+        /* Skjult besøgs-tæller */
+        #visitorCount {
+            position: fixed;
+            bottom: 5px;
+            left: 5px;
+            display: none;
+        }
+
+        /* Billeder */
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .image-container img {
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Affirmation</h1>
-        <h2>En healende måde at reflektere på</h2>
+        <h2>en healende måde at reflektere på</h2>
     </header>
 
     <div class="content">
+        <div class="image-container">
+            <video src="billede1.mp4" alt="Billede 1">
+            <video src="billede2.jpg" alt="Billede 2">
+            <video src="billede3.jpg" alt="Billede 3">
+            <img src="billede4.png" alt="Billede 4">
+        </div>
+
         <button onclick="showAffirmation()">Vis dagens selvreflektion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
     </div>
 
+    <p id="visitorCount"></p>
+
     <script>
+        function updateVisitorCount() {
+            fetch('https://api.countapi.xyz/hit/sozar202/microchange')
+            .then(res => res.json())
+            .then(res => {
+                document.getElementById('visitorCount').textContent = res.value;
+                console.log("Besøg opdateret: " + res.value);
+            })
+            .catch(err => console.error(err));
+        }
+        updateVisitorCount();
+
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
             "Jeg vælger at være stærk og positiv.",
@@ -132,27 +180,27 @@
 
         const morningTodos = [
             ["Tag dyb vejrtrækning", "Skriv 3 ting du vil opnå", "Start dagen med et smil", "Lav et glas vand", "Gentag en positiv sætning"],
-            ["Lav en positiv liste", "Tag på en kort gåtur", "Gentag en positiv sætning", "Planlæg dagens vigtigste opgave", "Visualiser succes"],
+            ["Lav en positiv liste", "Tag et kort gåture", "Gentag en positiv sætning", "Planlæg dagens vigtigste opgave", "Visualiser succes"],
             ["Prøv en ny aktivitet", "Planlæg en lille succes", "Drik et glas vand", "Lav taknemmelighedsliste", "Start med musik du elsker"],
             ["Fokusér på én opgave", "Lav morgenritual", "Visualiser dagens succes", "Send kærlige tanker", "Skriv dagens intention"],
-            ["Skriv hvad der gør dig glad", "Prioriter dagens vigtigste opgave", "Tal venligt til dig selv", "Lav en kort meditation", "Planlæg sjove oplevelser"],
+            ["Skriv hvad der gør dig glad", "Prioriter dagens vigtigste opgave", "Tal venligt til dig selv", "Lav kort meditation", "Planlæg sjove oplevelser"],
             ["Start med åbent hjerte", "Send kærlige tanker", "Planlæg glædesøjeblik", "Gentag positiv sætning", "Lav taknemmelighedsliste"],
             ["Sæt mål om sjove oplevelser", "Vær opmærksom på små glæder", "Lav noget kreativt", "Drik et glas vand", "Visualiser succes"],
-            ["Gentag positiv sætning højt", "Lav en kort meditation", "Vær opmærksom på omgivelserne", "Lav taknemmelighedsliste", "Start dagen med et smil"],
-            ["Lav taknemmelighedsliste", "Hils på en venlig person", "Skriv dagens intention", "Gentag positiv sætning", "Lav en kort meditation"],
-            ["Vælg en glædelig handling", "Del noget positivt", "Start dagen med musik", "Skriv 3 ting du værdsætter", "Lav taknemmelighedsliste"]
+            ["Gentag positiv sætning højt", "Lav kort meditation", "Vær opmærksom på omgivelserne", "Lav taknemmelighedsliste", "Start dagen med smil"],
+            ["Lav taknemmelighedsliste", "Hils på en venlig person", "Skriv dagens intention", "Gentag positiv sætning", "Lav kort meditation"],
+            ["Vælg glædelig handling", "Del noget positivt", "Start dagen med musik", "Skriv 3 ting du værdsætter", "Lav taknemmelighedsliste"]
         ];
 
         const eveningTodos = [
-            ["Skriv 3 ting du er taknemmelig for", "Tag et varmt bad", "Lyt til beroligende musik", "Læs lidt i en bog", "Lav en kort meditation"],
+            ["Skriv 3 ting du er taknemmelig for", "Tag et varmt bad", "Lyt til beroligende musik", "Læs lidt", "Lav kort meditation"],
             ["Luk dagen med et smil", "Læs en bog inden sengetid", "Lav vejrtrækning", "Skriv dagens læring", "Planlæg positiv morgen"],
             ["Skriv kærligt brev til dig selv", "Mediter et par minutter", "Sig noget venligt til dig selv", "Lav taknemmelighedsliste", "Visualiser ro"],
             ["Reflekter over små sejre", "Skriv dagens læring", "Planlæg positiv morgen", "Lyt til afslappende musik", "Lav vejrtrækning"],
             ["Lav fred med dagens fejltrin", "Tilgiv dig selv og andre", "Lav afslappende rutine", "Tag et varmt bad", "Lyt til musik"],
-            ["Lad bekymringer falde", "Sluk skærme 30 min før sengetid", "Drik en kop urtete", "Lav en kort meditation", "Skriv 3 ting du værdsætter"],
-            ["Tæl dagens præstationer", "Ros dig selv for små ting", "Lav en kort meditation", "Lyt til musik", "Planlæg en positiv morgen"],
-            ["Fyld dig med ro", "Lyt til afslappende musik", "Lav afslappende vejrtrækning", "Skriv 3 ting du værdsætter", "Lav en kort meditation"],
-            ["Giv dig selv kærlighed og omsorg", "Skriv ned hvad du værdsætter", "Tag et øjeblik i stilhed", "Lav en kort meditation", "Lyt til musik"],
+            ["Lad bekymringer falde", "Sluk skærme 30 min før sengetid", "Drik kop urtete", "Lav kort meditation", "Skriv 3 ting du værdsætter"],
+            ["Tæl dagens præstationer", "Ros dig selv for små ting", "Lav kort meditation", "Lyt til musik", "Planlæg positiv morgen"],
+            ["Fyld dig med ro", "Lyt til afslappende musik", "Lav afslappende vejrtrækning", "Skriv 3 ting du værdsætter", "Lav kort meditation"],
+            ["Giv dig selv kærlighed og omsorg", "Skriv ned hvad du værdsætter", "Tag et øjeblik i stilhed", "Lav kort meditation", "Lyt til musik"],
             ["Forbered dig på god søvn", "Sørg for mørkt og roligt soveområde", "Lav kort afslapningsritual", "Skriv dagens læring", "Lyt til afslappende musik"]
         ];
 
