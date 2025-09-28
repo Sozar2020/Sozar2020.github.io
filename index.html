@@ -2,7 +2,8 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>MicroChange – Daglig Inspiration</title>
+    <title>Affirmation – En Daglig Inspiration</title>
+    <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html, body {
@@ -88,25 +89,27 @@
             left: 10px;
             font-size: 14px;
             color: #0D47A1;
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>MicroChange – Små Skridt, Store Resultater</h1>
-        <h2>Din daglige inspiration og refleksion</h2>
+        <h1>Affirmation</h1>
+        <h2>en healende måde at reflektere på</h2>
     </header>
 
     <div class="content">
-        <button onclick="showAffirmation()">Vis dagens inspiration</button>
-        <p id="affirmation">Tryk på knappen for at få din inspiration</p>
+        <button onclick="showAffirmation()">Vis dagens selvreflektion</button>
+        <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
     </div>
 
+    <!-- Besøgsantal -->
     <p id="visitorCount">Antal besøgende: indlæses...</p>
 
     <script>
-        // Besøgsantal
+        // Hent besøgsantal og vis det
         fetch('https://api.countapi.xyz/hit/sozar202/microchange')
             .then(res => res.json())
             .then(data => {
@@ -119,10 +122,31 @@
                 console.error(err);
             });
 
-        const morningAffirmations = ["I dag starter jeg med ro og glæde.","Jeg vælger at være stærk og positiv.","Min energi åbner nye muligheder.","Jeg er fokuseret og klar til dagen.","Jeg tager ansvar for min egen lykke.","Jeg møder dagen med et åbent hjerte.","Jeg tiltrækker gode oplevelser.","Jeg har tillid til mig selv.","Jeg er taknemmelig for alt, jeg har.","Jeg vælger glæde i hvert øjeblik."];
-        const eveningAffirmations = ["Jeg slipper dagen med taknemmelighed.","Jeg fortjener hvile og fred.","Jeg sender kærlige tanker til mig selv.","Jeg reflekterer over dagens gode øjeblikke.","Jeg tilgiver mig selv og andre.","Jeg lader bekymringerne falde.","Jeg er stolt af mig selv i dag.","Jeg fylder mig selv med ro.","Jeg giver mig selv kærlighed og omsorg.","Jeg forbereder mig på en god nats søvn."];
+        const morningAffirmations = [
+            "I dag starter jeg med ro og glæde.",
+            "Jeg vælger at være stærk og positiv.",
+            "Min energi åbner nye muligheder.",
+            "Jeg er fokuseret og klar til dagen.",
+            "Jeg tager ansvar for min egen lykke.",
+            "Jeg møder dagen med et åbent hjerte.",
+            "Jeg tiltrækker gode oplevelser.",
+            "Jeg har tillid til mig selv.",
+            "Jeg er taknemmelig for alt, jeg har.",
+            "Jeg vælger glæde i hvert øjeblik."
+        ];
 
-        // Morgen- og aftento-doer kan indsættes her som tidligere
+        const eveningAffirmations = [
+            "Jeg slipper dagen med taknemmelighed.",
+            "Jeg fortjener hvile og fred.",
+            "Jeg sender kærlige tanker til mig selv.",
+            "Jeg reflekterer over dagens gode øjeblikke.",
+            "Jeg tilgiver mig selv og andre.",
+            "Jeg lader bekymringerne falde.",
+            "Jeg er stolt af mig selv i dag.",
+            "Jeg fylder mig selv med ro.",
+            "Jeg giver mig selv kærlighed og omsorg.",
+            "Jeg forbereder mig på en god nats søvn."
+        ];
 
         function showAffirmation() {
             const hour = new Date().getHours();
