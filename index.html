@@ -18,7 +18,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: flex-start; /* overskrift øverst */
             padding: 40px 20px;
             text-align: center;
         }
@@ -34,11 +34,11 @@
         }
 
         .content {
-            flex: 1;
+            flex: 1; /* fylder resten af skærmen */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: center; /* centrer knap og tekst */
         }
 
         h2 {
@@ -79,17 +79,22 @@
             background-color: #FFE58A;
         }
 
-        .morning { color: #1565C0; font-weight: 600; }
-        .evening { color: #6A1B9A; font-weight: 600; }
+        .morning {
+            color: #1E88E5;
+            font-weight: 600;
+        }
 
-        /* Besøgsantal i nederste venstre hjørne */
+        .evening {
+            color: #6A1B9A;
+            font-weight: 600;
+        }
+
+        /* Skjult besøgs-tæller */
         #visitorCount {
             position: fixed;
-            bottom: 10px;
-            left: 10px;
-            font-size: 14px;
-            color: #0D47A1;
-            margin: 0;
+            bottom: 5px;
+            left: 5px;
+            display: none;
         }
     </style>
 </head>
@@ -105,22 +110,20 @@
         <ul id="todos"></ul>
     </div>
 
-    <!-- Besøgsantal -->
-    <p id="visitorCount">Antal besøgende: indlæses...</p>
+    <p id="visitorCount"></p>
 
     <script>
-        // Hent besøgsantal og vis det
-        fetch('https://api.countapi.xyz/hit/sozar202/microchange')
+        // Skjult besøgs-tæller
+        function updateVisitorCount() {
+            fetch('https://api.countapi.xyz/hit/sozar202/microchange')
             .then(res => res.json())
-            .then(data => {
-                document.getElementById('visitorCount').textContent = 
-                    "Antal besøgende: " + data.value;
+            .then(res => {
+                document.getElementById('visitorCount').textContent = res.value;
+                console.log("Besøg opdateret: " + res.value);
             })
-            .catch(err => {
-                document.getElementById('visitorCount').textContent = 
-                    "Kan ikke hente besøgsantal";
-                console.error(err);
-            });
+            .catch(err => console.error(err));
+        }
+        updateVisitorCount();
 
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
@@ -148,22 +151,64 @@
             "Jeg forbereder mig på en god nats søvn."
         ];
 
+        const morningTodos = [
+            ["Tag dyb vejrtrækning", "Skriv 3 ting du vil opnå", "Start dagen med et smil", "Lav et glas vand", "Gentag en positiv sætning"],
+            ["Lav en positiv liste", "Tag et kort gåture", "Gentag en positiv sætning", "Planlæg dagens vigtigste opgave", "Visualiser succes"],
+            ["Prøv en ny aktivitet", "Planlæg en lille succes", "Drik et glas vand", "Lav taknemmelighedsliste", "Start med musik du elsker"],
+            ["Fokusér på én opgave", "Lav morgenritual", "Visualiser dagens succes", "Send kærlige tanker", "Skriv dagens intention"],
+            ["Skriv hvad der gør dig glad", "Prioriter dagens vigtigste opgave", "Tal venligt til dig selv", "Lav kort meditation", "Planlæg sjove oplevelser"],
+            ["Start med åbent hjerte", "Send kærlige tanker", "Planlæg glædesøjeblik", "Gentag positiv sætning", "Lav taknemmelighedsliste"],
+            ["Sæt mål om sjove oplevelser", "Vær opmærksom på små glæder", "Lav noget kreativt", "Drik et glas vand", "Visualiser succes"],
+            ["Gentag positiv sætning højt", "Lav kort meditation", "Vær opmærksom på omgivelserne", "Lav taknemmelighedsliste", "Start dagen med smil"],
+            ["Lav taknemmelighedsliste", "Hils på en venlig person", "Skriv dagens intention", "Gentag positiv sætning", "Lav kort meditation"],
+            ["Vælg glædelig handling", "Del noget positivt", "Start dagen med musik", "Skriv 3 ting du værdsætter", "Lav taknemmelighedsliste"]
+        ];
+
+        const eveningTodos = [
+            ["Skriv 3 ting du er taknemmelig for", "Tag et varmt bad", "Lyt til beroligende musik", "Læs lidt", "Lav kort meditation"],
+            ["Luk dagen med et smil", "Læs en bog inden sengetid", "Lav vejrtrækning", "Skriv dagens læring", "Planlæg positiv morgen"],
+            ["Skriv kærligt brev til dig selv", "Mediter et par minutter", "Sig noget venligt til dig selv", "Lav taknemmelighedsliste", "Visualiser ro"],
+            ["Reflekter over små sejre", "Skriv dagens læring", "Planlæg positiv morgen", "Lyt til afslappende musik", "Lav vejrtrækning"],
+            ["Lav fred med dagens fejltrin", "Tilgiv dig selv og andre", "Lav afslappende rutine", "Tag et varmt bad", "Lyt til musik"],
+            ["Lad bekymringer falde", "Sluk skærme 30 min før sengetid", "Drik kop urtete", "Lav kort meditation", "Skriv 3 ting du værdsætter"],
+            ["Tæl dagens præstationer", "Ros dig selv for små ting", "Lav kort meditation", "Lyt til musik", "Planlæg positiv morgen"],
+            ["Fyld dig med ro", "Lyt til afslappende musik", "Lav afslappende vejrtrækning", "Skriv 3 ting du værdsætter", "Lav kort meditation"],
+            ["Giv dig selv kærlighed og omsorg", "Skriv ned hvad du værdsætter", "Tag et øjeblik i stilhed", "Lav kort meditation", "Lyt til musik"],
+            ["Forbered dig på god søvn", "Sørg for mørkt og roligt soveområde", "Lav kort afslapningsritual", "Skriv dagens læring", "Lyt til afslappende musik"]
+        ];
+
         function showAffirmation() {
             const hour = new Date().getHours();
             const affirmationElement = document.getElementById("affirmation");
-            let affirmation;
+            let affirmation, todos;
 
             if (hour < 12) {
                 const idx = Math.floor(Math.random() * morningAffirmations.length);
                 affirmation = morningAffirmations[idx];
+                todos = getRandomTodos(morningTodos[idx]);
                 affirmationElement.textContent = "Morgeninspiration: " + affirmation;
                 affirmationElement.className = "morning";
             } else {
                 const idx = Math.floor(Math.random() * eveningAffirmations.length);
                 affirmation = eveningAffirmations[idx];
+                todos = getRandomTodos(eveningTodos[idx]);
                 affirmationElement.textContent = "Afteninspiration: " + affirmation;
                 affirmationElement.className = "evening";
             }
+
+            const ul = document.getElementById("todos");
+            ul.innerHTML = "";
+            todos.forEach(todo => {
+                const li = document.createElement("li");
+                li.textContent = "⭐ " + todo;
+                ul.appendChild(li);
+            });
+        }
+
+        function getRandomTodos(todoArray) {
+            const copy = [...todoArray];
+            copy.sort(() => Math.random() - 0.5);
+            return copy.slice(0, 3);
         }
     </script>
 </body>
