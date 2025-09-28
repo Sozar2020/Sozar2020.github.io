@@ -211,5 +211,23 @@
             return copy.slice(0, 3);
         }
     </script>
+    
+    <p id="visitorCount">Antal besøgende: indlæses...</p>
+
+<script>
+    // Hent besøgsantal og vis det direkte
+    fetch('https://api.countapi.xyz/hit/sozar202/microchange')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('visitorCount').textContent = 
+                "Antal besøgende: " + data.value;
+        })
+        .catch(err => {
+            document.getElementById('visitorCount').textContent = 
+                "Kan ikke hente besøgsantal";
+            console.error(err);
+        });
+</script>
+
 </body>
 </html>
