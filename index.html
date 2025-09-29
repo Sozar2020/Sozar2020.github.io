@@ -160,9 +160,9 @@
         // Start musikken automatisk ved indlæsning
         window.addEventListener("load", () => {
             music.play().catch(() => {
-                musicBtn.textContent = "🔊"; // Autoplay ikke tilladt på nogle browsere
+                musicBtn.textContent = "🔇"; // Autoplay ikke tilladt på nogle browsere
             });
-            musicBtn.textContent = "🔇🔊"; // skifter ikon til "sluk"
+            musicBtn.textContent = "🔊"; // skifter ikon til "sluk"
         });
 
         // Tænd/sluk knap
