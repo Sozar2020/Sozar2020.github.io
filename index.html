@@ -32,7 +32,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around; /* 👈 fordeler elementerne jævnt */
+            justify-content: flex-start;
             margin-top: 5px;
         }
 
@@ -67,31 +67,25 @@
         p, li {
             font-size: 40px;
             margin: 10px 0;
+            text-align: center; /* centrér både affirmation og to-do tekst */
         }
 
         ul {
             list-style: none;
+            text-align: center; /* centrér to-do */
             margin-top: 10px;
             padding-left: 0;
+            width: 100%; /* fylder hele containeren */
         }
 
-        /* Fix så todo-listen bliver til højre */
-        #todos {
-            text-align: left;
-            display: block;
-            margin-left: 120px; /* rykket mod højre */
-            max-width: 600px;   /* begrænset bredde */
-        }
-
-        #todos li {
-            white-space: normal;
-            word-wrap: break-word;
+        li {
+            display: block; /* sikrer at hver li står på ny linje */
         }
 
         button {
             padding: 14px 30px;
             font-size: 40px;
-            margin: 15px 0;
+            margin: 10px 0 20px 0; /* lidt mindre mellemrum mellem knap og tekst */
             border: none;
             border-radius: 8px;
             background-color: #FFD966;
@@ -168,15 +162,14 @@
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
-        // Start musikken automatisk ved indlæsning
-        window.addEventListener("load", () => {
+        // Start musikken automatisk ved klik på dagens refleksion
+        function startMusic() {
             music.play().catch(() => {
-                musicBtn.textContent = "🔊"; // Autoplay ikke tilladt på nogle browsere
+                musicBtn.textContent = "🔊"; // Autoplay ikke tilladt
             });
-            musicBtn.textContent = "🔊"; // skifter ikon til "tændt"
-        });
+            musicBtn.textContent = "🔊";
+        }
 
-        // Tænd/sluk knap
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play();
@@ -187,7 +180,6 @@
             }
         });
 
-        // Stop musikken øjeblikkeligt, når fanen/tabben ikke er aktiv
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 music.pause();
@@ -248,6 +240,7 @@
         ];
 
         function showAffirmation() {
+            startMusic(); // start musikken ved klik på dagens refleksion
             const hour = new Date().getHours();
             const affirmationElement = document.getElementById("affirmation");
             let affirmation, todos;
