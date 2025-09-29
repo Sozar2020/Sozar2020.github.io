@@ -105,26 +105,26 @@
             font-weight: 600;
         }
 
-        /* Musikafspiller-stil */
+        /* Musikafspiller med gennemsigtig knap i nederste venstre hjørne */
         .music-player {
-            margin: 10px 0;
+            position: fixed;
+            bottom: 80px;   /* afstand fra bunden */
+            left: 80px;     /* afstand fra venstre kant */
+            z-index: 1000;  /* sikrer den ligger ovenpå alt andet */
         }
 
         .music-player button {
-            font-size: 30px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: #FFD966;
-            color: #0D47A1;
+            font-size: 60px;          /* større ikon */
+            padding: 0;               /* ingen ekstra fyld */
+            border: none;             /* fjern kant */
+            background: transparent;  /* gennemsigtig baggrund */
+            color: #0D47A1;           /* farve på ikonet */
             cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s;
         }
 
         .music-player button:hover {
-            transform: scale(1.05);
-            background-color: #FFE58A;
+            transform: scale(1.2);    /* lille zoom ved hover */
         }
     </style>
 </head>
@@ -134,9 +134,9 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <!-- Musikafspiller med højttaler-knap -->
+    <!-- Musikafspiller med gennemsigtig højttaler-knap -->
     <div class="music-player">
-        <button id="musicBtn">🔊 Tænd musik</button>
+        <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
             <source src="forest-spirit-meditation-411288.mp3" type="audio/mpeg">
             Din browser understøtter ikke lydafspilning.
@@ -161,10 +161,18 @@
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play();
-                musicBtn.textContent = "🔇 Sluk musik";
+                musicBtn.textContent = "🔇";
             } else {
                 music.pause();
-                musicBtn.textContent = "🔊 Tænd musik";
+                musicBtn.textContent = "🔊";
+            }
+        });
+
+        // Stop musik, når fanen ikke er aktiv
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                music.pause();
+                musicBtn.textContent = "🔊"; // ikon tilbage til "tænd"
             }
         });
 
@@ -187,7 +195,7 @@
             "Jeg sender kærlige tanker til mig selv.",
             "Jeg reflekterer over dagens gode øjeblikke.",
             "Jeg tilgiver mig selv og andre.",
-            "Jeg lader bekymringerne falde.",
+            "Jeg lader bekymringer falde.",
             "Jeg er stolt af mig selv i dag.",
             "Jeg fylder mig selv med ro.",
             "Jeg giver mig selv kærlighed og omsorg.",
