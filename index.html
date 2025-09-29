@@ -32,7 +32,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-around;
             margin-top: 5px;
         }
 
@@ -64,28 +64,30 @@
             font-weight: 400;
         }
 
-        p, li {
+        p {
             font-size: 40px;
             margin: 10px 0;
-            text-align: center; /* centrér både affirmation og to-do tekst */
+            max-width: 600px; /* sikrer linjelængde */
+            word-wrap: break-word;
         }
 
         ul {
-            list-style: none;
-            text-align: center; /* centrér to-do */
-            margin-top: 10px;
-            padding-left: 0;
-            width: 100%; /* fylder hele containeren */
+            list-style: none;       /* fjerner standard punkter */
+            padding-left: 0;        /* fjerner venstremargin */
+            margin: 10px 0;         /* margin over og under */
+            text-align: left;       /* holder stjernerne lodret */
+            display: block;         /* sikrer fuld bredde */
         }
 
-        li {
-            display: block; /* sikrer at hver li står på ny linje */
+        ul li {
+            margin: 5px 0;          /* lidt afstand mellem hver to-do */
+            font-size: 40px;
         }
 
         button {
             padding: 14px 30px;
             font-size: 40px;
-            margin: 10px 0 20px 0; /* lidt mindre mellemrum mellem knap og tekst */
+            margin: 15px 0;
             border: none;
             border-radius: 8px;
             background-color: #FFD966;
@@ -113,23 +115,23 @@
         /* Musikafspiller med gennemsigtig knap i nederste venstre hjørne */
         .music-player {
             position: fixed;
-            bottom: 80px;   /* afstand fra bunden */
-            left: 80px;     /* afstand fra venstre kant */
-            z-index: 1000;  /* sikrer den ligger ovenpå alt andet */
+            bottom: 80px;
+            left: 80px;
+            z-index: 1000;
         }
 
         .music-player button {
-            font-size: 60px;          /* større ikon */
-            padding: 0;               /* ingen ekstra fyld */
-            border: none;             /* fjern kant */
-            background: transparent;  /* gennemsigtig baggrund */
-            color: #0D47A1;           /* farve på ikonet */
+            font-size: 60px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: #0D47A1;
             cursor: pointer;
             transition: transform 0.2s;
         }
 
         .music-player button:hover {
-            transform: scale(1.2);    /* lille zoom ved hover */
+            transform: scale(1.2);
         }
     </style>
 </head>
@@ -152,7 +154,7 @@
         <div class="pingvin-container">
             <img src="billede4.png" alt="Min søde pingvin">
         </div>
-                
+
         <button onclick="showAffirmation()">Vis dagens selvrefleksion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
@@ -162,14 +164,15 @@
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
-        // Start musikken automatisk ved klik på dagens refleksion
-        function startMusic() {
+        // Start musikken automatisk ved indlæsning
+        window.addEventListener("load", () => {
             music.play().catch(() => {
                 musicBtn.textContent = "🔊"; // Autoplay ikke tilladt
             });
             musicBtn.textContent = "🔊";
-        }
+        });
 
+        // Tænd/sluk knap
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play();
@@ -180,6 +183,7 @@
             }
         });
 
+        // Stop musikken, når fanen/tabben ikke er aktiv
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 music.pause();
@@ -240,7 +244,6 @@
         ];
 
         function showAffirmation() {
-            startMusic(); // start musikken ved klik på dagens refleksion
             const hour = new Date().getHours();
             const affirmationElement = document.getElementById("affirmation");
             let affirmation, todos;
