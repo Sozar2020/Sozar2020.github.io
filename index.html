@@ -32,7 +32,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around;
+            justify-content: flex-start;
             margin-top: 5px;
         }
 
@@ -67,21 +67,20 @@
         p {
             font-size: 40px;
             margin: 10px 0;
-            max-width: 600px; /* sikrer linjelængde */
+            text-align: center;
+            max-width: 800px;
             word-wrap: break-word;
         }
 
         ul {
-            list-style: none;       /* fjerner standard punkter */
-            padding-left: 0;        /* fjerner venstremargin */
-            margin: 10px 0;         /* margin over og under */
-            text-align: left;       /* holder stjernerne lodret */
-            display: block;         /* sikrer fuld bredde */
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0;
+            text-align: center; /* bevarer centreret layout */
         }
 
         ul li {
-            margin: 5px 0;          /* lidt afstand mellem hver to-do */
-            font-size: 40px;
+            margin: 5px 0;
         }
 
         button {
@@ -115,23 +114,23 @@
         /* Musikafspiller med gennemsigtig knap i nederste venstre hjørne */
         .music-player {
             position: fixed;
-            bottom: 80px;
-            left: 80px;
-            z-index: 1000;
+            bottom: 80px;   
+            left: 80px;     
+            z-index: 1000;  
         }
 
         .music-player button {
-            font-size: 60px;
-            padding: 0;
-            border: none;
-            background: transparent;
-            color: #0D47A1;
+            font-size: 60px;          
+            padding: 0;               
+            border: none;             
+            background: transparent;  
+            color: #0D47A1;           
             cursor: pointer;
             transition: transform 0.2s;
         }
 
         .music-player button:hover {
-            transform: scale(1.2);
+            transform: scale(1.2);    
         }
     </style>
 </head>
@@ -154,7 +153,7 @@
         <div class="pingvin-container">
             <img src="billede4.png" alt="Min søde pingvin">
         </div>
-
+                
         <button onclick="showAffirmation()">Vis dagens selvrefleksion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
@@ -167,9 +166,9 @@
         // Start musikken automatisk ved indlæsning
         window.addEventListener("load", () => {
             music.play().catch(() => {
-                musicBtn.textContent = "🔊"; // Autoplay ikke tilladt
+                musicBtn.textContent = "🔊"; 
             });
-            musicBtn.textContent = "🔊";
+            musicBtn.textContent = "🔊"; 
         });
 
         // Tænd/sluk knap
@@ -183,7 +182,7 @@
             }
         });
 
-        // Stop musikken, når fanen/tabben ikke er aktiv
+        // Stop musikken øjeblikkeligt, når fanen/tabben ikke er aktiv
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 music.pause();
