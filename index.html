@@ -169,10 +169,10 @@
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play();
-                musicBtn.textContent = "🔇";
+                musicBtn.textContent = "🔊";
             } else {
                 music.pause();
-                musicBtn.textContent = "🔊";
+                musicBtn.textContent = "🔇";
             }
         });
 
@@ -180,7 +180,7 @@
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 music.pause();
-                musicBtn.textContent = "🔊";
+                musicBtn.textContent = "🔇";
             }
         });
 
