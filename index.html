@@ -27,14 +27,13 @@
             width: 100%;
         }
 
-       .content {
+        .content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* NY: gør så tekst ikke står helt i midten */
-            justify-content: space-around;
+            align-items: center;
+            justify-content: space-around; /* 👈 fordeler elementerne jævnt */
             margin-top: 5px;
-            padding-left: 120px; /* NY: skubber indholdet mod højre */
         }
 
         .pingvin-container {
@@ -68,15 +67,25 @@
         p, li {
             font-size: 40px;
             margin: 10px 0;
-            text-align: left; /* NY: så teksten starter fra venstre */
         }
 
         ul {
             list-style: none;
-            text-align: left;
-            display: inline-block;
             margin-top: 10px;
             padding-left: 0;
+        }
+
+        /* Fix så todo-listen bliver til højre */
+        #todos {
+            text-align: left;
+            display: block;
+            margin-left: 120px; /* rykket mod højre */
+            max-width: 600px;   /* begrænset bredde */
+        }
+
+        #todos li {
+            white-space: normal;
+            word-wrap: break-word;
         }
 
         button {
@@ -107,26 +116,26 @@
             font-weight: 600;
         }
 
-        /* Musikafspiller */
+        /* Musikafspiller med gennemsigtig knap i nederste venstre hjørne */
         .music-player {
             position: fixed;
-            bottom: 80px;
-            left: 80px;
-            z-index: 1000;
+            bottom: 80px;   /* afstand fra bunden */
+            left: 80px;     /* afstand fra venstre kant */
+            z-index: 1000;  /* sikrer den ligger ovenpå alt andet */
         }
 
         .music-player button {
-            font-size: 60px;
-            padding: 0;
-            border: none;
-            background: transparent;
-            color: #0D47A1;
+            font-size: 60px;          /* større ikon */
+            padding: 0;               /* ingen ekstra fyld */
+            border: none;             /* fjern kant */
+            background: transparent;  /* gennemsigtig baggrund */
+            color: #0D47A1;           /* farve på ikonet */
             cursor: pointer;
             transition: transform 0.2s;
         }
 
         .music-player button:hover {
-            transform: scale(1.2);
+            transform: scale(1.2);    /* lille zoom ved hover */
         }
     </style>
 </head>
@@ -136,7 +145,7 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <!-- Musikafspiller -->
+    <!-- Musikafspiller med gennemsigtig højttaler-knap -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -159,13 +168,15 @@
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
+        // Start musikken automatisk ved indlæsning
         window.addEventListener("load", () => {
             music.play().catch(() => {
-                musicBtn.textContent = "🔊";
+                musicBtn.textContent = "🔊"; // Autoplay ikke tilladt på nogle browsere
             });
-            musicBtn.textContent = "🔊";
+            musicBtn.textContent = "🔊"; // skifter ikon til "tændt"
         });
 
+        // Tænd/sluk knap
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play();
@@ -176,6 +187,7 @@
             }
         });
 
+        // Stop musikken øjeblikkeligt, når fanen/tabben ikke er aktiv
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 music.pause();
