@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Affirmation – En Daglig Inspiration</title>
-    <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
-            margin: 50;
+            margin: 0;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -19,7 +18,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 50px 50px;
+            padding: 50px 50px; /* luft top og bund */
             text-align: center;
         }
 
@@ -27,13 +26,13 @@
             width: 100%;
         }
 
-       .content {
+        .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around; /* 👈 fordeler elementerne jævnt */
-            margin-top: 155px;
+            justify-content: flex-start;
+            margin-top: 30px; /* afstand mellem header og content */
         }
 
         .pingvin-container {
@@ -42,7 +41,6 @@
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 5px;
-            margin-top: 5px;
         }
 
         .pingvin-container img {
@@ -54,12 +52,12 @@
         h1 {
             font-size: 52px;
             color: #0D47A1;
-            margin: 0 0 20px 0;
+            margin: 0;
         }
 
         h2 {
             font-size: 40px;
-            margin-bottom: 10px;
+            margin: 10px 0 0 0;
             color: #1E88E5;
             font-weight: 400;
         }
@@ -67,13 +65,15 @@
         p, li {
             font-size: 40px;
             margin: 20px 0;
+            word-wrap: break-word; /* bryder lange ord */
         }
 
         ul {
             list-style: none;
             text-align: center;
             display: inline-block;
-            margin-top: 50px;
+            margin-top: 20px;
+            margin-bottom: 50px;
             padding-left: 0;
         }
 
@@ -105,26 +105,25 @@
             font-weight: 600;
         }
 
-        /* Musikafspiller med gennemsigtig knap i nederste venstre hjørne */
         .music-player {
             position: fixed;
-            bottom: 1080px;   /* afstand fra bunden */
-            right: 40px;     /* afstand fra kant */
-            z-index: 1000;  /* sikrer den ligger ovenpå alt andet */
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
         }
 
         .music-player button {
-            font-size: 60px;          /* større ikon */
-            padding: 0;               /* ingen ekstra fyld */
-            border: none;             /* fjern kant */
-            background: transparent;  /* gennemsigtig baggrund */
-            color: #0D47A1;           /* farve på ikonet */
+            font-size: 60px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: #0D47A1;
             cursor: pointer;
             transition: transform 0.2s;
         }
 
         .music-player button:hover {
-            transform: scale(1.2);    /* lille zoom ved hover */
+            transform: scale(1.2);
         }
     </style>
 </head>
@@ -134,7 +133,6 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <!-- Musikafspiller med gennemsigtig højttaler-knap -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -157,15 +155,13 @@
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
-        // Start musikken automatisk ved indlæsning
         window.addEventListener("load", () => {
             music.play().catch(() => {
-                musicBtn.textContent = "🔊"; // Autoplay ikke tilladt på nogle browsere
+                musicBtn.textContent = "🔊";
             });
-            musicBtn.textContent = "🔊"; // skifter ikon til "sluk"
+            musicBtn.textContent = "🔊";
         });
 
-        // Tænd/sluk knap
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
                 music.play();
@@ -176,7 +172,6 @@
             }
         });
 
-        // Stop musikken øjeblikkeligt, når fanen/tabben ikke er aktiv
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 music.pause();
