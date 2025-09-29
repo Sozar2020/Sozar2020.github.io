@@ -27,38 +27,35 @@
             width: 100%;
         }
 
-          .content {
+        .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* ændret fra center til flex-start */
-            margin-top: 5px; /* juster efter behov */
-            }
+            justify-content: flex-start;
+            margin-top: 5px;
+        }
 
         .pingvin-container {
-    width: 300px;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    border-radius: 12px;
-    margin-bottom: 20px; /* afstand til knappen under */
-    margin-top: 5px; /* lidt ekstra justering, hvis nødvendigt */
-}
+            width: 300px;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            margin-top: 5px;
+        }
 
-.pingvin-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;    /* beskærer ikke billedet */
-}
-
+        .pingvin-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
         h1 {
             font-size: 52px;
             color: #0D47A1;
             margin: 0 0 20px 0;
         }
-
-      
 
         h2 {
             font-size: 40px;
@@ -108,7 +105,27 @@
             font-weight: 600;
         }
 
-             
+        /* Musikafspiller-stil */
+        .music-player {
+            margin: 10px 0;
+        }
+
+        .music-player button {
+            font-size: 30px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FFD966;
+            color: #0D47A1;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .music-player button:hover {
+            transform: scale(1.05);
+            background-color: #FFE58A;
+        }
     </style>
 </head>
 <body>
@@ -117,18 +134,39 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <div class="content">
-         <div class="pingvin-container">
-        <img src="billede4.png" alt="Min søde pingvin">
+    <!-- Musikafspiller med højttaler-knap -->
+    <div class="music-player">
+        <button id="musicBtn">🔊 Tænd musik</button>
+        <audio id="backgroundMusic" loop>
+            <source src="forest-spirit-meditation-411288.mp3" type="audio/mpeg">
+            Din browser understøtter ikke lydafspilning.
+        </audio>
     </div>
+
+    <div class="content">
+        <div class="pingvin-container">
+            <img src="billede4.png" alt="Min søde pingvin">
+        </div>
                 
         <button onclick="showAffirmation()">Vis dagens selvrefleksion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
     </div>
 
-
     <script>
+        // Musik-knap funktion
+        const music = document.getElementById("backgroundMusic");
+        const musicBtn = document.getElementById("musicBtn");
+
+        musicBtn.addEventListener("click", () => {
+            if (music.paused) {
+                music.play();
+                musicBtn.textContent = "🔇 Sluk musik";
+            } else {
+                music.pause();
+                musicBtn.textContent = "🔊 Tænd musik";
+            }
+        });
 
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
