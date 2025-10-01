@@ -251,32 +251,38 @@ ul#todos li {
         ];
 
         function showAffirmation() {
-            const hour = new Date().getHours();
-            const affirmationElement = document.getElementById("affirmation");
-            let affirmation, todos;
+    // Sørg for musikken kører, hvis den er paused
+    if (music.paused) {
+        music.play().catch(() => {});
+        musicBtn.textContent = "🔊";
+    }
 
-            if (hour < 12) {
-                const idx = Math.floor(Math.random() * morningAffirmations.length);
-                affirmation = morningAffirmations[idx];
-                todos = getRandomTodos(morningTodos[idx]);
-                affirmationElement.textContent = "Morgeninspiration: " + affirmation;
-                affirmationElement.className = "morning";
-            } else {
-                const idx = Math.floor(Math.random() * eveningAffirmations.length);
-                affirmation = eveningAffirmations[idx];
-                todos = getRandomTodos(eveningTodos[idx]);
-                affirmationElement.textContent = "Afteninspiration: " + affirmation;
-                affirmationElement.className = "evening";
-            }
+    const hour = new Date().getHours();
+    const affirmationElement = document.getElementById("affirmation");
+    let affirmation, todos;
 
-            const ul = document.getElementById("todos");
-            ul.innerHTML = "";
-            todos.forEach(todo => {
-                const li = document.createElement("li");
-                li.textContent = "⭐ " + todo;
-                ul.appendChild(li);
-            });
-        }
+    if (hour < 12) {
+        const idx = Math.floor(Math.random() * morningAffirmations.length);
+        affirmation = morningAffirmations[idx];
+        todos = getRandomTodos(morningTodos[idx]);
+        affirmationElement.textContent = "Morgeninspiration: " + affirmation;
+        affirmationElement.className = "morning";
+    } else {
+        const idx = Math.floor(Math.random() * eveningAffirmations.length);
+        affirmation = eveningAffirmations[idx];
+        todos = getRandomTodos(eveningTodos[idx]);
+        affirmationElement.textContent = "Afteninspiration: " + affirmation;
+        affirmationElement.className = "evening";
+    }
+
+    const ul = document.getElementById("todos");
+    ul.innerHTML = "";
+    todos.forEach(todo => {
+        const li = document.createElement("li");
+        li.textContent = "⭐ " + todo;
+        ul.appendChild(li);
+    });
+}
 
         function getRandomTodos(todoArray) {
             const copy = [...todoArray];
