@@ -131,25 +131,18 @@
 
         /* Faldende blade */
         .leaf {
-            position: fixed;
-            top: -50px;
-            font-size: 30px;
-            pointer-events: none;
-            z-index: 500;
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-        }
+    position: fixed;
+    top: -50px;
+    pointer-events: none;
+    user-select: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+}
 
-        @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) rotate(360deg);
-                opacity: 0;
-            }
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
         }
     </style>
 </head>
