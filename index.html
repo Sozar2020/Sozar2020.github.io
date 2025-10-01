@@ -9,7 +9,6 @@
         html, body {
             height: 100%;
             margin: 0;
-            padding: 0;
             font-family: 'Poppins', sans-serif;
             overflow: hidden; /* Ingen scroll */
         }
@@ -21,26 +20,26 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            padding: 20px 20px;
             text-align: center;
+            position: relative;
         }
 
         header {
             width: 100%;
-            margin-top: 40px;
         }
 
-        .content {
+       .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            margin-top: 20px;
+            margin-top: 50px;
         }
 
         .pingvin-container {
-            width: 80%;
-            max-width: 600px;
+            width: 600px;
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
@@ -54,38 +53,42 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 52px;
             color: #0D47A1;
-            margin: 0 0 10px 0;
+            margin: 0 0 20px 0;
         }
 
         h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 40px;
+            margin-bottom: 10px;
             color: #1E88E5;
             font-weight: 400;
         }
 
         p, li {
-            font-size: 1.5rem;
-            margin: 10px 0;
+            font-size: 40px;
+            margin: 20px 0;
         }
 
-        ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 20px;
+        ul#todos {
+            list-style: none;        /* fjerner standard bullets */
+            padding: 0;              /* fjerner indrykning */
+            margin: 20px auto 0;     /* centrerer listen */
+            display: flex;
+            flex-direction: column;  /* lægger items lodret */
+            align-items: center;     /* centrerer stjernerne horisontalt */
         }
 
-        ul li {
-            margin: 10px 0;
-            text-align: center;
+        ul#todos li {
+            text-align: center;      /* sikrer, at teksten står lige under hinanden */
+            margin: 5px 0;           /* lidt luft mellem hver stjerne */
+            font-size: 40px;         /* behold din størrelse */
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 1.5rem;
-            margin: 10px 0;
+            padding: 14px 30px;
+            font-size: 40px;
+            margin: 15px 0;
             border: none;
             border-radius: 8px;
             background-color: #FFD966;
@@ -110,20 +113,20 @@
             font-weight: 600;
         }
 
-        /* Musikafspiller øverst venstre */
+        /* Musikafspiller med gennemsigtig knap i øverste venstre hjørne */
         .music-player {
             position: fixed;
             top: 20px;
             left: 20px;
-            z-index: 1000;
+            z-index: 1000;  /* sikrer den ligger ovenpå alt andet */
         }
 
         .music-player button {
-            font-size: 2.5rem;
-            padding: 0;
-            border: none;
-            background: transparent;
-            color: #0D47A1;
+            font-size: 60px;          
+            padding: 0;               
+            border: none;             
+            background: transparent;  
+            color: #0D47A1;           
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -134,25 +137,17 @@
 
         /* Blade animation */
         .leaf {
-            position: fixed;
-            top: -50px;
-            font-size: 2rem;
-            color: #D35400;
-            opacity: 0.8;
+            position: absolute;
+            font-size: 50px; /* større blade */
+            pointer-events: none;
             animation-name: fall;
-            animation-iteration-count: infinite;
             animation-timing-function: linear;
+            animation-iteration-count: infinite;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg); }
-            100% { transform: translateY(110vh) rotate(360deg); }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.5rem; }
-            p, li, button { font-size: 1.2rem; }
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
@@ -162,6 +157,7 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
+    <!-- Musikafspiller med gennemsigtig højttaler-knap -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -181,36 +177,34 @@
     </div>
 
     <script>
-        // Musik
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
+        // Start musikken automatisk ved indlæsning
         window.addEventListener("load", () => {
-            music.play().catch(() => { musicBtn.textContent = "🔊"; });
+            music.play().catch(() => {
+                musicBtn.textContent = "🔊";
+            });
+            musicBtn.textContent = "🔊";
         });
 
         musicBtn.addEventListener("click", () => {
-            if (music.paused) { music.play(); musicBtn.textContent="🔊"; } 
-            else { music.pause(); musicBtn.textContent="🔇"; }
+            if (music.paused) {
+                music.play();
+                musicBtn.textContent = "🔊";
+            } else {
+                music.pause();
+                musicBtn.textContent = "🔇";
+            }
         });
 
         document.addEventListener("visibilitychange", () => {
-            if (document.hidden) { music.pause(); musicBtn.textContent="🔇"; }
+            if (document.hidden) {
+                music.pause();
+                musicBtn.textContent = "🔇";
+            }
         });
 
-        // Blade
-        const leaves = ["🍁","🍂"];
-        for(let i=0;i<10;i++){
-            const leaf = document.createElement("div");
-            leaf.className="leaf";
-            leaf.textContent = leaves[Math.floor(Math.random()*leaves.length)];
-            leaf.style.left=Math.random()*100+"vw";
-            leaf.style.fontSize=(20+Math.random()*40)+"px";
-            leaf.style.animationDuration=(10+Math.random()*10)+"s";
-            document.body.appendChild(leaf);
-        }
-
-        // Affirmations
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
             "Jeg vælger at være stærk og positiv.",
@@ -268,33 +262,44 @@
             const affirmationElement = document.getElementById("affirmation");
             let affirmation, todos;
 
-            if(hour<12){
-                const idx=Math.floor(Math.random()*morningAffirmations.length);
-                affirmation=morningAffirmations[idx];
-                todos=getRandomTodos(morningTodos[idx]);
-                affirmationElement.textContent="Morgeninspiration: "+affirmation;
-                affirmationElement.className="morning";
+            if (hour < 12) {
+                const idx = Math.floor(Math.random() * morningAffirmations.length);
+                affirmation = morningAffirmations[idx];
+                todos = getRandomTodos(morningTodos[idx]);
+                affirmationElement.textContent = "Morgeninspiration: " + affirmation;
+                affirmationElement.className = "morning";
             } else {
-                const idx=Math.floor(Math.random()*eveningAffirmations.length);
-                affirmation=eveningAffirmations[idx];
-                todos=getRandomTodos(eveningTodos[idx]);
-                affirmationElement.textContent="Afteninspiration: "+affirmation;
-                affirmationElement.className="evening";
+                const idx = Math.floor(Math.random() * eveningAffirmations.length);
+                affirmation = eveningAffirmations[idx];
+                todos = getRandomTodos(eveningTodos[idx]);
+                affirmationElement.textContent = "Afteninspiration: " + affirmation;
+                affirmationElement.className = "evening";
             }
 
-            const ul=document.getElementById("todos");
-            ul.innerHTML="";
-            todos.forEach(todo=>{
-                const li=document.createElement("li");
-                li.textContent="⭐ "+todo;
+            const ul = document.getElementById("todos");
+            ul.innerHTML = "";
+            todos.forEach(todo => {
+                const li = document.createElement("li");
+                li.textContent = "⭐ " + todo;
                 ul.appendChild(li);
             });
         }
 
-        function getRandomTodos(todoArray){
-            const copy=[...todoArray];
-            copy.sort(()=>Math.random()-0.5);
-            return copy.slice(0,3);
+        function getRandomTodos(todoArray) {
+            const copy = [...todoArray];
+            copy.sort(() => Math.random() - 0.5);
+            return copy.slice(0, 3);
+        }
+
+        // Blade animation
+        const leafSymbols = ["🍁","🍂"];
+        for (let i=0;i<8;i++){ // færre blade
+            const leaf = document.createElement("div");
+            leaf.className = "leaf";
+            leaf.style.left = Math.random()*100 + "vw";
+            leaf.style.animationDuration = (6 + Math.random()*4) + "s"; // langsommere
+            leaf.textContent = leafSymbols[Math.floor(Math.random()*leafSymbols.length)];
+            document.body.appendChild(leaf);
         }
     </script>
 </body>
