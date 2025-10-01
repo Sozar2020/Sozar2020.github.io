@@ -57,7 +57,7 @@
 
         h2 {
             font-size: 40px;
-            margin: 5px 0 0 0; /* mindre afstand */
+            margin: 10px 0 0 0;
             color: #1E88E5;
             font-weight: 400;
         }
@@ -133,7 +133,7 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <!-- Musikafspiller -->
+    <!-- Musik-afspiller -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -153,16 +153,9 @@
     </div>
 
     <script>
-        /* === Musik-kode === */
+        // Musik kontrol
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
-
-        window.addEventListener("load", () => {
-            music.play().catch(() => {
-                musicBtn.textContent = "🔊";
-            });
-            musicBtn.textContent = "🔊";
-        });
 
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
@@ -174,7 +167,7 @@
             }
         });
 
-        /* === Affirmations & ToDos === */
+        // Affirmations
         const morningAffirmations = [
             "I dag starter jeg med ro og glæde.",
             "Jeg vælger at være stærk og positiv.",
