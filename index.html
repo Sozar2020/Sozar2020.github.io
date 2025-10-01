@@ -1,239 +1,228 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <title>Affirmation – En Daglig Inspiration</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Forhindrer scroll */
-            background: linear-gradient(to bottom, #B3E5FC, #0D47A1);
-        }
+<meta charset="UTF-8">
+<title>Affirmation – En Daglig Inspiration</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden; /* Ingen scroll */
+    background: linear-gradient(to bottom, #B3E5FC, #0D47A1);
+}
 
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 50px 20px;
-            text-align: center;
-        }
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding-top: 50px; /* Luft fra toppen */
+    padding-bottom: 50px; /* Luft fra bunden */
+}
 
-        header {
-            width: 100%;
-        }
+header { width: 100%; }
 
-        .content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            margin-top: 20px;
-        }
+h1 { font-size: 48px; color: #0D47A1; margin: 0 0 20px 0; }
+h2 { font-size: 32px; margin-bottom: 20px; color: #1E88E5; font-weight: 400; }
 
-        .pingvin-container {
-            width: 90%;
-            max-width: 600px;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .pingvin-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
+.pingvin-container {
+    width: 60vw;
+    max-width: 600px;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
 
-        h1 { font-size: 52px; color: #0D47A1; margin: 0 0 10px 0; }
-        h2 { font-size: 36px; margin-bottom: 20px; color: #1E88E5; font-weight: 400; }
-        p { font-size: 36px; margin: 20px 0 20px 0; }
+.pingvin-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
-        button {
-            padding: 12px 25px;
-            font-size: 36px;
-            margin: 15px 0;
-            border: none;
-            border-radius: 8px;
-            background-color: #FFD966;
-            color: #0D47A1;
-            cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-        button:hover { transform: scale(1.05); background-color: #FFE58A; }
+button {
+    padding: 12px 24px;
+    font-size: 28px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #FFD966;
+    color: #0D47A1;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.2s;
+}
 
-        .morning { color: #1E88E5; font-weight: 600; }
-        .evening { color: #6A1B9A; font-weight: 600; }
+button:hover {
+    transform: scale(1.05);
+    background-color: #FFE58A;
+}
 
-        /* Musikknap øverst til venstre */
-        .music-player {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-        .music-player button {
-            font-size: 50px;
-            padding: 0;
-            border: none;
-            background: transparent;
-            color: #0D47A1;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .music-player button:hover { transform: scale(1.2); }
+p, li {
+    font-size: 28px;
+    margin: 10px 0;
+    line-height: 1.4;
+}
 
-        /* To-Do liste */
-        ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* vigtig: juster stjerner korrekt */
-            gap: 10px;
-            max-width: 600px;
-            width: 100%;
-        }
-        li {
-            display: flex;
-            align-items: center;
-            font-size: 32px;
-            line-height: 1.3;
-            text-align: left;
-        }
-        li::before {
-            content: "⭐ ";
-            margin-right: 8px;
-            flex-shrink: 0;
-        }
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Stjerner under hinanden */
+}
 
-        /* Blade-animation */
-        .leaf {
-            position: fixed;
-            top: -100px;
-            width: 60px;
-            height: 60px;
-            background-image: url('leaf.png'); /* brug dit blad-billede */
-            background-size: cover;
-            pointer-events: none;
-            z-index: 500;
-            opacity: 0.8;
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.8; }
-        }
+.morning { color: #1E88E5; font-weight: 600; }
+.evening { color: #6A1B9A; font-weight: 600; }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 36px; }
-            h2 { font-size: 24px; }
-            p { font-size: 24px; }
-            button { font-size: 24px; padding: 8px 16px; }
-            li { font-size: 20px; }
-        }
-    </style>
+/* Musikknap øverst til venstre */
+.music-player {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.music-player button {
+    font-size: 48px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #0D47A1;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.music-player button:hover { transform: scale(1.2); }
+
+/* Blade */
+.leaf {
+    position: fixed;
+    top: -50px;
+    font-size: 40px; /* Større blade */
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.8;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Responsivt */
+@media (max-width: 600px) {
+    h1 { font-size: 36px; }
+    h2 { font-size: 24px; }
+    p, li { font-size: 20px; }
+    button { font-size: 22px; padding: 10px 20px; }
+    .pingvin-container { width: 80vw; }
+    .leaf { font-size: 30px; }
+}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Affirmation</h1>
-        <h2>En healende måde at reflektere på</h2>
-    </header>
 
-    <div class="music-player">
-        <button id="musicBtn">🔊</button>
-        <audio id="backgroundMusic" loop>
-            <source src="forest-spirit-meditation-411288.mp3" type="audio/mpeg">
-            Din browser understøtter ikke lydafspilning.
-        </audio>
+<header>
+    <h1>Affirmation</h1>
+    <h2>En healende måde at reflektere på</h2>
+</header>
+
+<div class="music-player">
+    <button id="musicBtn">🔊</button>
+    <audio id="backgroundMusic" loop>
+        <source src="forest-spirit-meditation-411288.mp3" type="audio/mpeg">
+        Din browser understøtter ikke lydafspilning.
+    </audio>
+</div>
+
+<div class="content">
+    <div class="pingvin-container">
+        <img src="billede4.png" alt="Min søde pingvin">
     </div>
+            
+    <button onclick="showAffirmation()">Vis dagens selvrefleksion</button>
+    <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
+    <ul id="todos"></ul>
+</div>
 
-    <div class="content">
-        <div class="pingvin-container">
-            <img src="billede4.png" alt="Min søde pingvin">
-        </div>
-        <button onclick="showAffirmation()">Vis dagens selvrefleksion</button>
-        <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
-        <ul id="todos"></ul>
-    </div>
+<script>
+const music = document.getElementById("backgroundMusic");
+const musicBtn = document.getElementById("musicBtn");
 
-    <script>
-        const music = document.getElementById("backgroundMusic");
-        const musicBtn = document.getElementById("musicBtn");
+window.addEventListener("load", () => {
+    music.play().catch(() => { musicBtn.textContent = "🔊"; });
+    musicBtn.textContent = "🔊";
+});
 
-        window.addEventListener("load", () => { music.play().catch(() => {}); });
+musicBtn.addEventListener("click", () => {
+    if (music.paused) { music.play(); musicBtn.textContent = "🔊"; }
+    else { music.pause(); musicBtn.textContent = "🔇"; }
+});
 
-        musicBtn.addEventListener("click", () => {
-            if (music.paused) { music.play(); musicBtn.textContent="🔊"; }
-            else { music.pause(); musicBtn.textContent="🔇"; }
-        });
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) { music.pause(); musicBtn.textContent = "🔇"; }
+});
 
-        const morningAffirmations = [
-            "I dag starter jeg med ro og glæde.",
-            "Jeg vælger at være stærk og positiv.",
-            "Min energi åbner nye muligheder."
-        ];
-        const eveningAffirmations = [
-            "Jeg slipper dagen med taknemmelighed.",
-            "Jeg fortjener hvile og fred.",
-            "Jeg sender kærlige tanker til mig selv."
-        ];
-        const morningTodos = [
-            ["Tag dyb vejrtrækning", "Skriv 3 ting du vil opnå", "Start dagen med et smil"],
-            ["Lav en positiv liste", "Tag på en kort gåtur", "Gentag en positiv sætning"],
-            ["Prøv en ny aktivitet", "Planlæg en lille succes", "Drik et glas vand"]
-        ];
-        const eveningTodos = [
-            ["Skriv 3 ting du er taknemmelig for", "Tag et varmt bad", "Lyt til beroligende musik"],
-            ["Luk dagen med et smil", "Læs en bog inden sengetid", "Lav vejrtrækning"],
-            ["Skriv kærligt brev til dig selv", "Mediter et par minutter", "Sig noget venligt til dig selv"]
-        ];
+const morningAffirmations = ["I dag starter jeg med ro og glæde.","Jeg vælger at være stærk og positiv."];
+const eveningAffirmations = ["Jeg slipper dagen med taknemmelighed.","Jeg fortjener hvile og fred."];
 
-        function showAffirmation() {
-            const hour = new Date().getHours();
-            const affirmationElement = document.getElementById("affirmation");
-            let affirmation, todos;
-            if(hour < 12){
-                affirmation = morningAffirmations[Math.floor(Math.random()*morningAffirmations.length)];
-                todos = morningTodos[Math.floor(Math.random()*morningTodos.length)];
-                affirmationElement.className="morning";
-                affirmationElement.textContent="Morgeninspiration: "+affirmation;
-            } else {
-                affirmation = eveningAffirmations[Math.floor(Math.random()*eveningAffirmations.length)];
-                todos = eveningTodos[Math.floor(Math.random()*eveningTodos.length)];
-                affirmationElement.className="evening";
-                affirmationElement.textContent="Afteninspiration: "+affirmation;
-            }
+const morningTodos = [["Tag dyb vejrtrækning","Skriv 3 ting du vil opnå","Start dagen med et smil"]];
+const eveningTodos = [["Skriv 3 ting du er taknemmelig for","Tag et varmt bad","Lyt til beroligende musik"]];
 
-            const ul = document.getElementById("todos");
-            ul.innerHTML="";
-            todos.forEach(todo=>{
-                const li=document.createElement("li");
-                li.textContent=todo;
-                ul.appendChild(li);
-            });
-        }
+function showAffirmation() {
+    const hour = new Date().getHours();
+    const affirmationElement = document.getElementById("affirmation");
+    let affirmation, todos;
 
-        // Blade-animation 🍂
-        const leafCount = 5;
-        for(let i=0;i<leafCount;i++){
-            const leaf=document.createElement('div');
-            leaf.className='leaf';
-            leaf.style.left=Math.random()*100+'vw';
-            leaf.style.animationDuration=(10+Math.random()*10)+'s';
-            leaf.style.width=(40+Math.random()*40)+'px';
-            leaf.style.height=leaf.style.width;
-            document.body.appendChild(leaf);
-        }
-    </script>
+    if (hour < 12) {
+        affirmation = morningAffirmations[Math.floor(Math.random() * morningAffirmations.length)];
+        todos = morningTodos[0];
+        affirmationElement.textContent = "Morgeninspiration: " + affirmation;
+        affirmationElement.className = "morning";
+    } else {
+        affirmation = eveningAffirmations[Math.floor(Math.random() * eveningAffirmations.length)];
+        todos = eveningTodos[0];
+        affirmationElement.textContent = "Afteninspiration: " + affirmation;
+        affirmationElement.className = "evening";
+    }
+
+    const ul = document.getElementById("todos");
+    ul.innerHTML = "";
+    todos.forEach(todo => {
+        const li = document.createElement("li");
+        li.textContent = "⭐ " + todo;
+        ul.appendChild(li);
+    });
+}
+
+// Blade animation
+const leafEmojis = ["🍁","🍂"];
+function createLeaf() {
+    const leaf = document.createElement("div");
+    leaf.className = "leaf";
+    leaf.textContent = leafEmojis[Math.floor(Math.random()*leafEmojis.length)];
+    leaf.style.left = Math.random() * 90 + "vw";
+    leaf.style.fontSize = (40 + Math.random()*20) + "px"; // Større blade
+    leaf.style.animationDuration = (15 + Math.random()*10) + "s"; // Langsomt fald
+    document.body.appendChild(leaf);
+    setTimeout(() => leaf.remove(), parseFloat(leaf.style.animationDuration)*1000);
+}
+setInterval(createLeaf, 2000); // færre blade
+</script>
+
 </body>
 </html>
