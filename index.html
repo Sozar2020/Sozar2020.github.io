@@ -161,6 +161,7 @@ ul#todos li {
         <h2>En healende måde at reflektere på</h2>
     </header>
 
+   <!-- Musikafspiller -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -301,6 +302,34 @@ ul#todos li {
             leaf.textContent = leaves[Math.floor(Math.random()*leaves.length)];
             document.body.appendChild(leaf);
         }
+
+        <script>
+    const music = document.getElementById("backgroundMusic");
+    const musicBtn = document.getElementById("musicBtn");
+
+    window.addEventListener("load", () => {
+        music.play().catch(() => {
+            musicBtn.textContent = "🔊";
+        });
+        musicBtn.textContent = "🔊";
+    });
+
+    musicBtn.addEventListener("click", () => {
+        if (music.paused) {
+            music.play();
+            musicBtn.textContent = "🔊";
+        } else {
+            music.pause();
+            musicBtn.textContent = "🔇";
+        }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            music.pause();
+            musicBtn.textContent = "🔇";
+        }
+    });
     </script>
 </body>
 </html>
