@@ -68,20 +68,21 @@
         }
 
         ul#todos {
-    list-style: none;
-    text-align: left;   /* venstrejusteret for ens stjerner */
-    padding-left: 0;
-    margin-top: 20px;   /* adskiller fra affirmation */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* sikrer ⭐️ står lige under hinanden */
-}
+            list-style: none;
+            text-align: left;   /* venstrejusteret for ens stjerner */
+            padding-left: 0;
+            margin-top: 20px;   /* adskiller fra affirmation */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* sikrer ⭐️ står lige under hinanden */
+        }
 
-ul#todos li {
-    display: block;
-    margin: 10px 0;  /* beholder samme afstand som tekststørrelsen */
-    font-size: 28px; /* beholder den oprindelige størrelse */
-}
+        ul#todos li {
+            display: block;
+            margin: 10px 0;
+            font-size: 28px;
+        }
+
         button {
             padding: 14px 30px;
             font-size: 28px;
@@ -146,7 +147,6 @@ ul#todos li {
             100% { transform: translateY(100vh) rotate(360deg); opacity:0.5; }
         }
 
-        /* Responsivt: mindre tekst på mobil */
         @media (max-width: 600px) {
             h1 { font-size: 28px; }
             h2 { font-size: 20px; }
@@ -161,8 +161,9 @@ ul#todos li {
         <h2>En healende måde at reflektere på</h2>
     </header>
 
+    <!-- Musikafspiller -->
     <div class="music-player">
-        <button id="musicBtn">🔊</button>
+        <button id="musicBtn">🔇</button>
         <audio id="backgroundMusic" loop>
             <source src="forest-spirit-meditation-411288.mp3" type="audio/mpeg">
             Din browser understøtter ikke lydafspilning.
@@ -183,14 +184,10 @@ ul#todos li {
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
-        // Forsøg autoplay
-        window.addEventListener("load", () => {
-            music.play().catch(() => {});
-        });
-
+        // Klik på musikknappen
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
-                music.play();
+                music.play().catch(() => {});
                 musicBtn.textContent = "🔊";
             } else {
                 music.pause();
@@ -251,38 +248,38 @@ ul#todos li {
         ];
 
         function showAffirmation() {
-    // Sørg for musikken kører, hvis den er paused
-    if (music.paused) {
-        music.play().catch(() => {});
-        musicBtn.textContent = "🔊";
-    }
+            // Hvis musik er på pause -> start når man trykker på affirmation-knappen
+            if (music.paused) {
+                music.play().catch(() => {});
+                musicBtn.textContent = "🔊";
+            }
 
-    const hour = new Date().getHours();
-    const affirmationElement = document.getElementById("affirmation");
-    let affirmation, todos;
+            const hour = new Date().getHours();
+            const affirmationElement = document.getElementById("affirmation");
+            let affirmation, todos;
 
-    if (hour < 12) {
-        const idx = Math.floor(Math.random() * morningAffirmations.length);
-        affirmation = morningAffirmations[idx];
-        todos = getRandomTodos(morningTodos[idx]);
-        affirmationElement.textContent = "Morgeninspiration: " + affirmation;
-        affirmationElement.className = "morning";
-    } else {
-        const idx = Math.floor(Math.random() * eveningAffirmations.length);
-        affirmation = eveningAffirmations[idx];
-        todos = getRandomTodos(eveningTodos[idx]);
-        affirmationElement.textContent = "Afteninspiration: " + affirmation;
-        affirmationElement.className = "evening";
-    }
+            if (hour < 12) {
+                const idx = Math.floor(Math.random() * morningAffirmations.length);
+                affirmation = morningAffirmations[idx];
+                todos = getRandomTodos(morningTodos[idx]);
+                affirmationElement.textContent = "Morgeninspiration: " + affirmation;
+                affirmationElement.className = "morning";
+            } else {
+                const idx = Math.floor(Math.random() * eveningAffirmations.length);
+                affirmation = eveningAffirmations[idx];
+                todos = getRandomTodos(eveningTodos[idx]);
+                affirmationElement.textContent = "Afteninspiration: " + affirmation;
+                affirmationElement.className = "evening";
+            }
 
-    const ul = document.getElementById("todos");
-    ul.innerHTML = "";
-    todos.forEach(todo => {
-        const li = document.createElement("li");
-        li.textContent = "⭐ " + todo;
-        ul.appendChild(li);
-    });
-}
+            const ul = document.getElementById("todos");
+            ul.innerHTML = "";
+            todos.forEach(todo => {
+                const li = document.createElement("li");
+                li.textContent = "⭐ " + todo;
+                ul.appendChild(li);
+            });
+        }
 
         function getRandomTodos(todoArray) {
             const copy = [...todoArray];
@@ -290,14 +287,14 @@ ul#todos li {
             return copy.slice(0, 3);
         }
 
-        // Tilføj blade 🍁/🍂
+        // Blade 🍁🍂
         const leaves = ["🍁","🍂"];
         for(let i=0;i<6;i++){
             const leaf = document.createElement("div");
             leaf.className = "leaf";
             leaf.style.left = Math.random()*90 + "vw";
-            leaf.style.animationDuration = (10 + Math.random()*10) + "s"; // langsommere fald
-            leaf.style.fontSize = (40 + Math.random()*30) + "px"; // større blade
+            leaf.style.animationDuration = (10 + Math.random()*10) + "s";
+            leaf.style.fontSize = (40 + Math.random()*30) + "px";
             leaf.textContent = leaves[Math.floor(Math.random()*leaves.length)];
             document.body.appendChild(leaf);
         }
