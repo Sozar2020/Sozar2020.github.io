@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Affirmation – En Daglig Inspiration</title>
-    <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Ingen scroll */
+            overflow: hidden; /* ingen scroll */
         }
 
         body {
@@ -20,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 20px 20px;
+            padding: 0px;
             text-align: center;
             position: relative;
         }
@@ -29,13 +28,13 @@
             width: 100%;
         }
 
-       .content {
+        .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            margin-top: 50px;
+            justify-content: space-around;
+            margin-top: 100px;
         }
 
         .pingvin-container {
@@ -43,7 +42,7 @@
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin: 5px 0;
         }
 
         .pingvin-container img {
@@ -68,21 +67,17 @@
         p, li {
             font-size: 40px;
             margin: 20px 0;
+            text-align: center;
         }
 
-        ul#todos {
-            list-style: none;        /* fjerner standard bullets */
-            padding: 0;              /* fjerner indrykning */
-            margin: 20px auto 0;     /* centrerer listen */
-            display: flex;
-            flex-direction: column;  /* lægger items lodret */
-            align-items: center;     /* centrerer stjernerne horisontalt */
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 20px;
         }
 
-        ul#todos li {
-            text-align: center;      /* sikrer, at teksten står lige under hinanden */
-            margin: 5px 0;           /* lidt luft mellem hver stjerne */
-            font-size: 40px;         /* behold din størrelse */
+        ul li {
+            margin: 5px 0;
         }
 
         button {
@@ -113,20 +108,20 @@
             font-weight: 600;
         }
 
-        /* Musikafspiller med gennemsigtig knap i øverste venstre hjørne */
+        /* Musikafspiller i venstre hjørne */
         .music-player {
             position: fixed;
             top: 20px;
             left: 20px;
-            z-index: 1000;  /* sikrer den ligger ovenpå alt andet */
+            z-index: 1000;
         }
 
         .music-player button {
-            font-size: 60px;          
-            padding: 0;               
-            border: none;             
-            background: transparent;  
-            color: #0D47A1;           
+            font-size: 60px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: #0D47A1;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -137,18 +132,30 @@
 
         /* Blade animation */
         .leaf {
-            position: absolute;
-            font-size: 50px; /* større blade */
+            position: fixed;
+            top: -50px;
+            font-size: 40px;
+            animation: fall linear infinite;
             pointer-events: none;
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg); opacity:1; }
+            100% { transform: translateY(120vh) rotate(360deg); opacity:0; }
         }
+
+        /* Responsivt design */
+        @media (max-width: 1023px) {
+            .pingvin-container { width: 90%; }
+        }
+
+        @media (min-width: 1024px) {
+            h1 { font-size: 48px; }
+            h2 { font-size: 36px; }
+            p, li, button { font-size: 36px; }
+            .pingvin-container { width: 500px; }
+        }
+
     </style>
 </head>
 <body>
@@ -157,7 +164,6 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <!-- Musikafspiller med gennemsigtig højttaler-knap -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -180,12 +186,9 @@
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
-        // Start musikken automatisk ved indlæsning
+        // Forsøg automatisk afspilning
         window.addEventListener("load", () => {
-            music.play().catch(() => {
-                musicBtn.textContent = "🔊";
-            });
-            musicBtn.textContent = "🔊";
+            music.play().catch(()=>{});
         });
 
         musicBtn.addEventListener("click", () => {
@@ -232,29 +235,13 @@
         ];
 
         const morningTodos = [
-            ["Tag dyb vejrtrækning", "Skriv 3 ting du vil opnå", "Start dagen med et smil", "Lav et glas vand", "Gentag en positiv sætning"],
-            ["Lav en positiv liste", "Tag på en kort gåtur", "Gentag en positiv sætning", "Planlæg dagens vigtigste opgave", "Visualiser succes"],
-            ["Prøv en ny aktivitet", "Planlæg en lille succes", "Drik et glas vand", "Lav taknemmelighedsliste", "Start med musik du elsker"],
-            ["Fokusér på én opgave", "Lav morgenritual", "Visualiser dagens succes", "Send kærlige tanker", "Skriv dagens intention"],
-            ["Skriv hvad der gør dig glad", "Prioriter dagens vigtigste opgave", "Tal venligt til dig selv", "Lav en kort meditation", "Planlæg sjove oplevelser"],
-            ["Start med åbent hjerte", "Send kærlige tanker", "Planlæg glædesøjeblik", "Gentag positiv sætning", "Lav taknemmelighedsliste"],
-            ["Sæt mål om sjove oplevelser", "Vær opmærksom på små glæder", "Lav noget kreativt", "Drik et glas vand", "Visualiser succes"],
-            ["Gentag positiv sætning højt", "Lav en kort meditation", "Vær opmærksom på omgivelserne", "Lav taknemmelighedsliste", "Start dagen med et smil"],
-            ["Lav taknemmelighedsliste", "Hils på en venlig person", "Skriv dagens intention", "Gentag positiv sætning", "Lav en kort meditation"],
-            ["Vælg en glædelig handling", "Del noget positivt", "Start dagen med musik", "Skriv 3 ting du værdsætter", "Lav taknemmelighedsliste"]
+            ["Tag dyb vejrtrækning", "Skriv 3 ting du vil opnå", "Start dagen med et smil"],
+            ["Lav en positiv liste", "Tag på en kort gåtur", "Gentag en positiv sætning"]
         ];
 
         const eveningTodos = [
-            ["Skriv 3 ting du er taknemmelig for", "Tag et varmt bad", "Lyt til beroligende musik", "Læs lidt i en bog", "Lav en kort meditation"],
-            ["Luk dagen med et smil", "Læs en bog inden sengetid", "Lav vejrtrækning", "Skriv dagens læring", "Planlæg positiv morgen"],
-            ["Skriv kærligt brev til dig selv", "Mediter et par minutter", "Sig noget venligt til dig selv", "Lav taknemmelighedsliste", "Visualiser ro"],
-            ["Reflekter over små sejre", "Skriv dagens læring", "Planlæg positiv morgen", "Lyt til afslappende musik", "Lav vejrtrækning"],
-            ["Lav fred med dagens fejltrin", "Tilgiv dig selv og andre", "Lav afslappende rutine", "Tag et varmt bad", "Lyt til musik"],
-            ["Lad bekymringer falde", "Sluk skærme 30 min før sengetid", "Drik en kop urtete", "Lav en kort meditation", "Skriv 3 ting du værdsætter"],
-            ["Tæl dagens præstationer", "Ros dig selv for små ting", "Lav en kort meditation", "Lyt til musik", "Planlæg en positiv morgen"],
-            ["Fyld dig med ro", "Lyt til afslappende musik", "Lav afslappende vejrtrækning", "Skriv 3 ting du værdsætter", "Lav en kort meditation"],
-            ["Giv dig selv kærlighed og omsorg", "Skriv ned hvad du værdsætter", "Tag et øjeblik i stilhed", "Lav en kort meditation", "Lyt til musik"],
-            ["Forbered dig på god søvn", "Sørg for mørkt og roligt soveområde", "Lav kort afslapningsritual", "Skriv dagens læring", "Lyt til afslappende musik"]
+            ["Skriv 3 ting du er taknemmelig for", "Tag et varmt bad", "Lyt til beroligende musik"],
+            ["Luk dagen med et smil", "Læs en bog inden sengetid", "Lav vejrtrækning"]
         ];
 
         function showAffirmation() {
@@ -263,18 +250,16 @@
             let affirmation, todos;
 
             if (hour < 12) {
-                const idx = Math.floor(Math.random() * morningAffirmations.length);
-                affirmation = morningAffirmations[idx];
-                todos = getRandomTodos(morningTodos[idx]);
-                affirmationElement.textContent = "Morgeninspiration: " + affirmation;
+                affirmation = morningAffirmations[Math.floor(Math.random()*morningAffirmations.length)];
+                todos = morningTodos[Math.floor(Math.random()*morningTodos.length)];
                 affirmationElement.className = "morning";
             } else {
-                const idx = Math.floor(Math.random() * eveningAffirmations.length);
-                affirmation = eveningAffirmations[idx];
-                todos = getRandomTodos(eveningTodos[idx]);
-                affirmationElement.textContent = "Afteninspiration: " + affirmation;
+                affirmation = eveningAffirmations[Math.floor(Math.random()*eveningAffirmations.length)];
+                todos = eveningTodos[Math.floor(Math.random()*eveningTodos.length)];
                 affirmationElement.className = "evening";
             }
+
+            affirmationElement.textContent = affirmation;
 
             const ul = document.getElementById("todos");
             ul.innerHTML = "";
@@ -285,22 +270,19 @@
             });
         }
 
-        function getRandomTodos(todoArray) {
-            const copy = [...todoArray];
-            copy.sort(() => Math.random() - 0.5);
-            return copy.slice(0, 3);
-        }
-
         // Blade animation
-        const leafSymbols = ["🍁","🍂"];
-        for (let i=0;i<8;i++){ // færre blade
+        function createLeaf() {
             const leaf = document.createElement("div");
             leaf.className = "leaf";
-            leaf.style.left = Math.random()*100 + "vw";
-            leaf.style.animationDuration = (6 + Math.random()*4) + "s"; // langsommere
-            leaf.textContent = leafSymbols[Math.floor(Math.random()*leafSymbols.length)];
+            leaf.style.left = Math.random()*window.innerWidth + "px";
+            leaf.style.fontSize = (40 + Math.random()*20) + "px"; // større blade
+            leaf.style.animationDuration = (8 + Math.random()*5) + "s"; // langsommere
+            leaf.textContent = "🍁";
             document.body.appendChild(leaf);
+            setTimeout(()=>{leaf.remove()}, 15000);
         }
+
+        setInterval(createLeaf, 1500); // færre blade
     </script>
 </body>
 </html>
