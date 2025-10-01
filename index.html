@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Affirmation – En Daglig Inspiration</title>
+    <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html, body {
@@ -18,12 +19,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 50px 50px; /* luft top og bund */
+            padding: 50px;
             text-align: center;
+            overflow-x: hidden; /* Undgå horisontal scroll */
         }
 
         header {
             width: 100%;
+            margin-bottom: 20px;
         }
 
         .content {
@@ -32,11 +35,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            margin-top: 30px; /* afstand mellem header og content */
+            gap: 20px; /* mellemrum mellem elementer */
         }
 
         .pingvin-container {
             width: 600px;
+            max-width: 90%;
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
@@ -52,35 +56,33 @@
         h1 {
             font-size: 52px;
             color: #0D47A1;
-            margin: 0;
+            margin: 0 0 10px 0;
         }
 
         h2 {
             font-size: 40px;
-            margin: 10px 0 0 0;
+            margin: 0 0 30px 0;
             color: #1E88E5;
             font-weight: 400;
         }
 
         p, li {
             font-size: 40px;
-            margin: 20px 0;
-            word-wrap: break-word; /* bryder lange ord */
+            margin: 10px 0;
+            word-wrap: break-word; /* tillader linjeskift */
         }
 
         ul {
             list-style: none;
             text-align: center;
             display: inline-block;
-            margin-top: 20px;
-            margin-bottom: 50px;
             padding-left: 0;
+            margin-top: 0;
         }
 
         button {
             padding: 14px 30px;
             font-size: 40px;
-            margin: 15px 0;
             border: none;
             border-radius: 8px;
             background-color: #FFD966;
@@ -105,10 +107,11 @@
             font-weight: 600;
         }
 
+        /* Musikafspiller øverst i højre hjørne */
         .music-player {
             position: fixed;
             top: 20px;
-            left: 20px;
+            right: 20px;
             z-index: 1000;
         }
 
@@ -125,6 +128,29 @@
         .music-player button:hover {
             transform: scale(1.2);
         }
+
+        /* Faldende blade */
+        .leaf {
+            position: fixed;
+            top: -50px;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 500;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -133,6 +159,7 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
+    <!-- Musikafspiller -->
     <div class="music-player">
         <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
@@ -156,27 +183,17 @@
         const musicBtn = document.getElementById("musicBtn");
 
         window.addEventListener("load", () => {
-            music.play().catch(() => {
-                musicBtn.textContent = "🔊";
-            });
+            music.play().catch(() => { musicBtn.textContent = "🔊"; });
             musicBtn.textContent = "🔊";
         });
 
         musicBtn.addEventListener("click", () => {
-            if (music.paused) {
-                music.play();
-                musicBtn.textContent = "🔊";
-            } else {
-                music.pause();
-                musicBtn.textContent = "🔇";
-            }
+            if (music.paused) { music.play(); musicBtn.textContent = "🔊"; }
+            else { music.pause(); musicBtn.textContent = "🔇"; }
         });
 
         document.addEventListener("visibilitychange", () => {
-            if (document.hidden) {
-                music.pause();
-                musicBtn.textContent = "🔇";
-            }
+            if (document.hidden) { music.pause(); musicBtn.textContent = "🔇"; }
         });
 
         const morningAffirmations = [
@@ -264,6 +281,19 @@
             copy.sort(() => Math.random() - 0.5);
             return copy.slice(0, 3);
         }
+
+        // Faldende blade
+        function createLeaf() {
+            const leaf = document.createElement("span");
+            leaf.className = "leaf";
+            leaf.textContent = ["🍁","🍂"][Math.floor(Math.random()*2)];
+            leaf.style.left = Math.random() * 100 + "vw";
+            leaf.style.fontSize = 20 + Math.random() * 20 + "px";
+            leaf.style.animationDuration = 5 + Math.random() * 5 + "s";
+            document.body.appendChild(leaf);
+            leaf.addEventListener("animationend", () => leaf.remove());
+        }
+        setInterval(createLeaf, 300);
     </script>
 </body>
 </html>
