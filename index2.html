@@ -9,7 +9,6 @@
             height: 100%;
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Forhindrer rulning */
         }
 
         body {
@@ -18,12 +17,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+            padding: 50px 50px; /* luft top og bund */
             text-align: center;
         }
 
         header {
             width: 100%;
-            margin-top: 40px; /* luft fra toppen */
         }
 
         .content {
@@ -32,7 +32,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            margin-top: 20px;
+            margin-top: 30px; /* afstand mellem header og content */
         }
 
         .pingvin-container {
@@ -40,7 +40,7 @@
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .pingvin-container img {
@@ -50,42 +50,36 @@
         }
 
         h1 {
-            font-size: 40px;
+            font-size: 52px;
             color: #0D47A1;
-            margin: 0 0 5px 0;
+            margin: 0;
         }
 
         h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 40px;
+            margin: 10px 0 0 0;
             color: #1E88E5;
             font-weight: 400;
         }
 
-        p#affirmation {
-            font-size: 28px;
-            margin: 10px 0;
+        p, li {
+            font-size: 40px;
+            margin: 20px 0;
+            word-wrap: break-word; /* bryder lange ord */
         }
 
-        ul#todos {
+        ul {
             list-style: none;
-            text-align: left;   /* venstrejusteret for ens stjerner */
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
+            margin-bottom: 50px;
             padding-left: 0;
-            margin-top: 20px;   /* adskiller fra affirmation */
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* sikrer ⭐️ står lige under hinanden */
-        }
-
-        ul#todos li {
-            display: block;
-            margin: 10px 0;
-            font-size: 28px;
         }
 
         button {
             padding: 14px 30px;
-            font-size: 28px;
+            font-size: 40px;
             margin: 15px 0;
             border: none;
             border-radius: 8px;
@@ -111,7 +105,6 @@
             font-weight: 600;
         }
 
-        /* Musikknap i venstre hjørne */
         .music-player {
             position: fixed;
             top: 20px;
@@ -120,7 +113,7 @@
         }
 
         .music-player button {
-            font-size: 40px;
+            font-size: 60px;
             padding: 0;
             border: none;
             background: transparent;
@@ -132,27 +125,6 @@
         .music-player button:hover {
             transform: scale(1.2);
         }
-
-        /* Blad-animation */
-        .leaf {
-            position: fixed;
-            top: -50px;
-            font-size: 50px;
-            animation: fall linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(0) rotate(0deg); opacity:1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity:0.5; }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 28px; }
-            h2 { font-size: 20px; }
-            p#affirmation, ul#todos li, button { font-size: 20px; }
-            .pingvin-container { width: 90%; }
-        }
     </style>
 </head>
 <body>
@@ -161,9 +133,8 @@
         <h2>En healende måde at reflektere på</h2>
     </header>
 
-    <!-- Musikafspiller -->
     <div class="music-player">
-        <button id="musicBtn">🔇</button>
+        <button id="musicBtn">🔊</button>
         <audio id="backgroundMusic" loop>
             <source src="forest-spirit-meditation-411288.mp3" type="audio/mpeg">
             Din browser understøtter ikke lydafspilning.
@@ -174,7 +145,7 @@
         <div class="pingvin-container">
             <img src="billede4.png" alt="Min søde pingvin">
         </div>
-
+                
         <button onclick="showAffirmation()">Vis dagens selvrefleksion</button>
         <p id="affirmation">Tryk på knappen for at få en inspirerende handling</p>
         <ul id="todos"></ul>
@@ -184,12 +155,25 @@
         const music = document.getElementById("backgroundMusic");
         const musicBtn = document.getElementById("musicBtn");
 
-        // Klik på musikknappen
+        window.addEventListener("load", () => {
+            music.play().catch(() => {
+                musicBtn.textContent = "🔊";
+            });
+            musicBtn.textContent = "🔊";
+        });
+
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
-                music.play().catch(() => {});
+                music.play();
                 musicBtn.textContent = "🔊";
             } else {
+                music.pause();
+                musicBtn.textContent = "🔇";
+            }
+        });
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
                 music.pause();
                 musicBtn.textContent = "🔇";
             }
@@ -248,12 +232,6 @@
         ];
 
         function showAffirmation() {
-            // Hvis musik er på pause -> start når man trykker på affirmation-knappen
-            if (music.paused) {
-                music.play().catch(() => {});
-                musicBtn.textContent = "🔊";
-            }
-
             const hour = new Date().getHours();
             const affirmationElement = document.getElementById("affirmation");
             let affirmation, todos;
@@ -285,18 +263,6 @@
             const copy = [...todoArray];
             copy.sort(() => Math.random() - 0.5);
             return copy.slice(0, 3);
-        }
-
-        // Blade 🍁🍂
-        const leaves = ["🍁","🍂"];
-        for(let i=0;i<6;i++){
-            const leaf = document.createElement("div");
-            leaf.className = "leaf";
-            leaf.style.left = Math.random()*90 + "vw";
-            leaf.style.animationDuration = (10 + Math.random()*10) + "s";
-            leaf.style.fontSize = (40 + Math.random()*30) + "px";
-            leaf.textContent = leaves[Math.floor(Math.random()*leaves.length)];
-            document.body.appendChild(leaf);
         }
     </script>
 </body>
