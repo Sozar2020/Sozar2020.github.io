@@ -21,21 +21,21 @@ body {
     text-align: center;
     padding: 20px;
 }
-nav a { margin-top: 20px; display: inline-block; }
-h1 { font-size: 40px; margin: 20px 0; }
+nav a { margin-top: 15px; display: inline-block; }
+h1 { font-size: 32px; margin: 20px 0; }
+h2 { font-size: 24px; margin: 10px 0; }
 .affirmation {
     background: #FFD966;
-    padding: 15px;
+    padding: 12px;
     border-radius: 12px;
     margin: 10px 0;
-    font-size: 28px; 
+    font-size: 24px; 
     text-align: center;
 }
-h2 { font-size: 28px; margin: 10px 0; }
 button {
-    padding: 14px 30px;
-    font-size: 28px; 
-    margin: 15px 0;
+    padding: 10px 24px;
+    font-size: 24px; 
+    margin: 12px 0;
     border: none;
     border-radius: 8px;
     background-color: #FFD966;
@@ -48,7 +48,7 @@ button:hover { transform: scale(1.05); background-color: #FFE58A; }
 .reward {
     display: none;
     margin-top: 20px;
-    font-size: 28px; 
+    font-size: 24px; 
     color: #0D47A1;
     animation: pop 0.8s ease-out;
 }
@@ -57,21 +57,45 @@ button:hover { transform: scale(1.05); background-color: #FFE58A; }
   70% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
-#camera { border-radius: 12px; margin-top: 10px; width: 300px; height: 200px; }
+#camera { 
+    border-radius: 12px; 
+    margin-top: 10px; 
+    width: 300px; 
+    height: 300px; 
+    object-fit: cover; 
+}
+#switchCamera {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFD966;
+    color: #0D47A1;
+}
+#switchCamera:hover { background-color: #FFE58A; transform: scale(1.1); }
+
 ul#tasks {
     list-style: none;
     padding-left: 0;
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: left;
 }
 ul#tasks li {
-    font-size: 28px;
-    margin: 10px 0;
+    font-size: 24px;
+    margin: 8px 0;
 }
 @media (max-width: 600px) {
-    h1 { font-size: 28px; }
-    h2, .affirmation, button, .reward, ul#tasks li { font-size: 20px; }
-    #camera { width: 90%; height: auto; }
+    h1 { font-size: 24px; }
+    h2, .affirmation, button, .reward, ul#tasks li { font-size: 18px; }
+    #camera { width: 90%; height: auto; aspect-ratio: 1 / 1; }
+    #switchCamera { width: 40px; height: 40px; font-size: 16px; }
 }
 </style>
 </head>
@@ -83,38 +107,40 @@ ul#tasks li {
 <h1>Inner Child Session</h1>
 <div class="affirmation" id="affirmation"></div>
 
-<h2>Tag et billede for at starte</h2>
-<video id="camera" autoplay playsinline></video>
-<button id="switchCamera">Skift Kamera</button>
-<button id="takePhoto">Tag billede</button>
-<button id="openGallery">Se dit galleri</button>
-<canvas id="snapshot" width="300" height="200" style="display:none;"></canvas>
+<h2 id="taskInstruction">Opgave vises her</h2>
+<button id="startTaskBtn">Start opgave</button>
+
+<div id="cameraContainer" style="display:none;">
+  <video id="camera" autoplay playsinline></video>
+  <button id="takePhoto">Tag billede</button>
+  <canvas id="snapshot" width="300" height="300" style="display:none;"></canvas>
+</div>
 
 <ul id="tasks"></ul>
 
 <div class="reward" id="reward">🎉 Dit indre barn er stolt! ⭐</div>
 
-<script>
-// --- Dummy affirmation ---
-const affirmations = [
-  "Leg og udforsk verden med glæde.",
-  "Dit indre barn elsker små eventyr.",
-  "Du er tryg og kreativ."
-];
-document.getElementById('affirmation').innerText =
-  affirmations[Math.floor(Math.random()*affirmations.length)];
+<button id="switchCamera">🔄</button>
 
-// --- Opgaver ---
+<script>
+// --- Opgaver med specifik fotoinstruktion ---
 const taskPool = [
-  "Gå en lille tur udenfor",
-  "Find noget naturligt (blad, sten, blomst)",
-  "Tegn et lille billede af noget, du elsker",
-  "Lav en lille dans i stuen",
-  "Sig noget venligt til dig selv højt"
+  "Find et blad udenfor og tag billede",
+  "Find en sten og tag billede",
+  "Find noget blåt og tag billede",
+  "Find noget rundt og tag billede",
+  "Find noget der gør dig glad og tag billede"
 ];
-function getRandomTasks() {
-    let shuffled = taskPool.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
+
+let currentTask = "";
+
+// --- Vis ny opgave ---
+function setNewTask() {
+    const idx = Math.floor(Math.random() * taskPool.length);
+    currentTask = taskPool[idx];
+    document.getElementById('taskInstruction').innerText = "Opgave: " + currentTask;
+    document.getElementById('startTaskBtn').style.display = "inline-block";
+    document.getElementById('cameraContainer').style.display = "none";
 }
 
 // --- Kamera setup ---
@@ -134,6 +160,13 @@ async function startCamera() {
   }
 }
 
+// Start kamera når bruger trykker
+document.getElementById('startTaskBtn').addEventListener('click', ()=>{
+    startCamera();
+    document.getElementById('startTaskBtn').style.display = "none";
+    document.getElementById('cameraContainer').style.display = "block";
+});
+
 // Skift kamera
 document.getElementById('switchCamera').addEventListener('click', ()=>{
   useFrontCamera = !useFrontCamera;
@@ -142,37 +175,42 @@ document.getElementById('switchCamera').addEventListener('click', ()=>{
 
 // Tag billede
 document.getElementById('takePhoto').addEventListener('click', ()=>{
-  const canvas = document.getElementById('snapshot');
-  const context = canvas.getContext('2d');
-  context.drawImage(video,0,0,canvas.width,canvas.height);
-  const imageData = canvas.toDataURL('image/png');
+    const canvas = document.getElementById('snapshot');
+    const context = canvas.getContext('2d');
+    context.drawImage(video,0,0,canvas.width,canvas.height);
+    const imageData = canvas.toDataURL('image/png');
 
-  const gallery = JSON.parse(localStorage.getItem('innerChildGallery') || "[]");
-  gallery.push({ date: new Date().toISOString(), image: imageData });
-  localStorage.setItem('innerChildGallery', JSON.stringify(gallery));
+    const gallery = JSON.parse(localStorage.getItem('innerChildGallery') || "[]");
+    gallery.push({ date: new Date().toISOString(), image: imageData, task: currentTask });
+    localStorage.setItem('innerChildGallery', JSON.stringify(gallery));
 
-  // Belønning
-  const reward = document.getElementById('reward');
-  reward.style.display = 'block';
-  setTimeout(()=>{ reward.style.display='none'; },3000);
+    // Belønning
+    const reward = document.getElementById('reward');
+    reward.style.display = 'block';
+    setTimeout(()=>{ reward.style.display='none'; },3000);
 
-  // Vis opgaver
-  const tasks = getRandomTasks();
-  const ul = document.getElementById('tasks');
-  ul.innerHTML = "";
-  tasks.forEach(t=>{
-    const li = document.createElement('li');
-    li.textContent = "⭐ " + t;
-    ul.appendChild(li);
-  });
+    // Tilfældige opgaver under video
+    const tasks = getRandomTasks();
+    const ul = document.getElementById('tasks');
+    ul.innerHTML = "";
+    tasks.forEach(t=>{
+        const li = document.createElement('li');
+        li.textContent = "⭐ " + t;
+        ul.appendChild(li);
+    });
+
+    // Ny foto-opgave
+    setNewTask();
 });
 
-// Galleri-knap
-document.getElementById('openGallery').addEventListener('click', ()=>{
-  window.location.href = "inner-child-gallery.html";
-});
+// --- Tilfældige opgaver under kamera ---
+function getRandomTasks() {
+    let shuffled = taskPool.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3);
+}
 
-startCamera();
+// --- Start med første opgave ---
+setNewTask();
 </script>
 </body>
 </html>
