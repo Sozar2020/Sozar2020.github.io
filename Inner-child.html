@@ -1,188 +1,143 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inner Child App</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #fff3e6;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    h1, h2 { color: #ff6600; }
-    .affirmation {
-      background: #ffd699;
-      padding: 15px;
-      border-radius: 10px;
-      margin: 10px 0;
-      font-size: 1.2em;
-      text-align: center;
-    }
-    .tasks {
-      margin: 10px 0;
-      width: 100%;
-      max-width: 400px;
-    }
-    .task {
-      background: #ffe6cc;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 8px;
-    }
-    button {
-      background: #ff9933;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1em;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover { background: #ff6600; }
-    .reward {
-      display: none;
-      margin-top: 20px;
-      font-size: 1.5em;
-      color: #ff3300;
-      animation: pop 0.8s ease-out;
-      text-align: center;
-    }
-    @keyframes pop {
-      0% { transform: scale(0); }
-      70% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    #camera { border-radius: 10px; margin-top: 10px; }
-    #photoResult { margin-top: 10px; border-radius: 10px; max-width: 300px; }
-    .gallery-item { margin: 5px 0; background: #fff0e6; padding: 8px; border-radius: 8px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inner Child</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+body {
+    background: linear-gradient(to bottom, #B3E5FC, #0D47A1);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+nav a { margin-top: 20px; display: inline-block; }
+h1 { font-size: 40px; color: #0D47A1; margin: 20px 0; }
+.affirmation {
+    background: #FFD966;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 10px 0;
+    font-size: 28px;
+    text-align: center;
+}
+button {
+    padding: 14px 30px;
+    font-size: 28px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #FFD966;
+    color: #0D47A1;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.2s;
+}
+button:hover { transform: scale(1.05); background-color: #FFE58A; }
+.reward {
+    display: none;
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #0D47A1;
+    animation: pop 0.8s ease-out;
+}
+@keyframes pop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+#camera { border-radius: 12px; margin-top: 10px; }
+</style>
 </head>
 <body>
-  <h1>Inner Child Session</h1>
+<nav>
+  <a href="index.html"><button>Tilbage til Forside</button></a>
+</nav>
 
-  <div class="affirmation" id="affirmation"></div>
+<h1>Inner Child Session</h1>
+<div class="affirmation" id="affirmation"></div>
 
-  <div class="tasks" id="tasks"></div>
-  <button id="completeBtn">Jeg har fuldført dagens opgaver</button>
+<h2>Tag et billede for at starte</h2>
+<video id="camera" autoplay playsinline width="300"></video>
+<button id="switchCamera">Skift Kamera</button>
+<button id="takePhoto">Tag billede</button>
+<button id="openGallery">Se dit galleri</button>
+<canvas id="snapshot" width="300" height="200" style="display:none;"></canvas>
 
-  <div class="reward" id="reward">🎉 Dit indre barn er stolt! ⭐</div>
+<div class="reward" id="reward">🎉 Dit indre barn er stolt! ⭐</div>
 
-  <h2>Tilføj nyt billede til galleri</h2>
-  <video id="camera" autoplay playsinline width="300"></video>
-  <button id="takePhoto">Tag billede</button>
-  <canvas id="snapshot" width="300" height="200" style="display:none;"></canvas>
-  <img id="photoResult" src="" alt="Dit billede vises her">
+<script>
+// --- Dummy affirmation ---
+const affirmations = [
+  "Leg og udforsk verden med glæde.",
+  "Dit indre barn elsker små eventyr.",
+  "Du er tryg og kreativ."
+];
+document.getElementById('affirmation').innerText =
+  affirmations[Math.floor(Math.random()*affirmations.length)];
 
-  <h2>Dit Indre Barn Galleri</h2>
-  <div id="galleryDisplay"></div>
+// --- Kamera setup ---
+let video = document.getElementById('camera');
+let useFrontCamera = true;
 
-  <script>
-    // --- Dummy ChatGPT-affirmationer ---
-    const affirmationsMorning = [
-      "Jeg leger og udforsker verden med glæde.",
-      "Jeg er tryg og åben for nye oplevelser.",
-      "Mit indre barn elsker at opdage små skatte."
-    ];
-    const affirmationsEvening = [
-      "Jeg trøster og passer på mit indre barn.",
-      "Jeg reflekterer over dagens glæder.",
-      "Jeg mærker ro og taknemmelighed inden natten."
-    ];
+async function startCamera() {
+  if(window.stream) {
+    window.stream.getTracks().forEach(track => track.stop());
+  }
+  try {
+    const constraints = {
+      video: { facingMode: useFrontCamera ? "user" : { exact: "environment" } }
+    };
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    window.stream = stream;
+    video.srcObject = stream;
+  } catch(err) {
+    console.error("Kamera fejl:", err);
+    alert("Kamera kunne ikke startes. Prøv at give adgang eller skift browser.");
+  }
+}
 
-    // --- Dummy galleridata ---
-    if(!localStorage.getItem('gallery')) {
-      localStorage.setItem('gallery', JSON.stringify([
-        {name: "blad", color: "grøn", location: "park", date: "2025-10-09"},
-        {name: "kastanje", color: "brun", location: "skov", date: "2025-10-09"},
-        {name: "sten", color: "grå", location: "strand", date: "2025-10-09"}
-      ]));
-    }
+// Skift kamera
+document.getElementById('switchCamera').addEventListener('click', ()=>{
+  useFrontCamera = !useFrontCamera;
+  startCamera();
+});
 
-    function loadGallery() {
-      return JSON.parse(localStorage.getItem('gallery') || "[]");
-    }
+// Tag billede (gemmes kun i LocalStorage)
+document.getElementById('takePhoto').addEventListener('click', ()=>{
+  const canvas = document.getElementById('snapshot');
+  const context = canvas.getContext('2d');
+  context.drawImage(video,0,0,canvas.width,canvas.height);
+  const imageData = canvas.toDataURL('image/png');
 
-    function displayGallery() {
-      const galleryDiv = document.getElementById('galleryDisplay');
-      galleryDiv.innerHTML = '';
-      const gallery = loadGallery();
-      gallery.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'gallery-item';
-        div.innerHTML = `<strong>${item.name}</strong> (${item.color}) - ${item.location} <br><img src="${item.image || ''}" style="max-width:100px; display:block;">`;
-        galleryDiv.appendChild(div);
-      });
-    }
+  const gallery = JSON.parse(localStorage.getItem('innerChildGallery') || "[]");
+  gallery.push({
+    date: new Date().toISOString(),
+    image: imageData
+  });
+  localStorage.setItem('innerChildGallery', JSON.stringify(gallery));
 
-    // --- Daglig session-lås ---
-    const today = new Date().toISOString().split('T')[0];
-    if(localStorage.getItem('sessionDate') === today) {
-      document.getElementById('affirmation').innerText = "Du har allerede gennemført dagens session. Kom tilbage i morgen!";
-      document.getElementById('tasks').style.display = 'none';
-      document.getElementById('completeBtn').style.display = 'none';
-    } else {
-      const hour = new Date().getHours();
-      const timeOfDay = hour < 12 ? "morning" : "evening";
-      const affirmation = timeOfDay === "morning" ? 
-                          affirmationsMorning[Math.floor(Math.random()*affirmationsMorning.length)] :
-                          affirmationsEvening[Math.floor(Math.random()*affirmationsEvening.length)];
-      document.getElementById('affirmation').innerText = affirmation;
+  // Belønning
+  const reward = document.getElementById('reward');
+  reward.style.display = 'block';
+  setTimeout(()=>{ reward.style.display='none'; },3000);
+});
 
-      const gallery = loadGallery();
-      const tasksDiv = document.getElementById('tasks');
-      const shuffled = gallery.sort(() => 0.5 - Math.random()).slice(0,3);
-      shuffled.forEach((item,index)=>{
-        const div = document.createElement('div');
-        div.className = 'task';
-        div.innerText = `Opgave ${index+1}: Brug ${item.name} (${item.color}) fra ${item.location} som inspiration til en kreativ aktivitet.`;
-        tasksDiv.appendChild(div);
-      });
-    }
+// Galleri-knap
+document.getElementById('openGallery').addEventListener('click', ()=>{
+  window.location.href = "inner-child-gallery.html";
+});
 
-    // --- Fuldfør opgaver ---
-    document.getElementById('completeBtn').addEventListener('click', () => {
-      document.getElementById('reward').style.display = 'block';
-      localStorage.setItem('sessionDate', today);
-      document.getElementById('completeBtn').disabled = true;
-      document.getElementById('tasks').style.opacity = 0.5;
-    });
-
-    // --- Kamera og billede ---
-    const video = document.getElementById('camera');
-    const canvas = document.getElementById('snapshot');
-    const photoResult = document.getElementById('photoResult');
-    const takePhotoBtn = document.getElementById('takePhoto');
-
-    navigator.mediaDevices.getUserMedia({video:true})
-      .then(stream => { video.srcObject = stream; })
-      .catch(err => console.error("Kamera fejl:", err));
-
-    takePhotoBtn.addEventListener('click', () => {
-      const context = canvas.getContext('2d');
-      context.drawImage(video,0,0,canvas.width,canvas.height);
-      const imageData = canvas.toDataURL('image/png');
-      photoResult.src = imageData;
-
-      const gallery = loadGallery();
-      gallery.push({
-        name: prompt("Navn på objekt:"),
-        color: prompt("Farve på objekt:"),
-        location: prompt("Sted hvor det blev fundet:"),
-        date: new Date().toISOString(),
-        image: imageData
-      });
-      localStorage.setItem('gallery', JSON.stringify(gallery));
-      displayGallery();
-      alert("Billedet er gemt i dit galleri!");
-    });
-
-    displayGallery();
-  </script>
+startCamera();
+</script>
 </body>
 </html>
