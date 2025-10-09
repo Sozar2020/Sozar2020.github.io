@@ -6,138 +6,94 @@
 <title>Inner Child</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-html, body {
-    height: 100%;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
-}
+html, body { height: 100%; margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; }
 body {
     background: linear-gradient(to bottom, #B3E5FC, #0D47A1);
     color: #0D47A1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
+    display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px;
 }
-nav a { margin-top: 15px; display: inline-block; }
+
 h1 { font-size: 32px; margin: 20px 0; }
 h2 { font-size: 24px; margin: 10px 0; }
-.affirmation {
-    background: #FFD966;
-    padding: 12px;
-    border-radius: 12px;
-    margin: 10px 0;
-    font-size: 24px; 
-    text-align: center;
-}
-button {
-    padding: 10px 24px;
-    font-size: 24px; 
-    margin: 12px 0;
-    border: none;
-    border-radius: 8px;
-    background-color: #FFD966;
-    color: #0D47A1;
-    cursor: pointer;
-    font-weight: 600;
-    transition: transform 0.2s, background-color 0.2s;
-}
+
+#affirmation, #taskInstruction { font-size: 24px; margin: 10px 0; }
+ul#tasks { list-style: none; padding-left: 0; margin-top: 15px; text-align: left;}
+ul#tasks li { font-size: 24px; margin: 8px 0;}
+
+button { padding: 10px 24px; font-size: 24px; margin: 12px 0; border: none; border-radius: 8px;
+    background-color: #FFD966; color: #0D47A1; cursor: pointer; font-weight: 600; transition: transform 0.2s, background-color 0.2s;}
 button:hover { transform: scale(1.05); background-color: #FFE58A; }
-.reward {
-    display: none;
-    margin-top: 20px;
-    font-size: 24px; 
-    color: #0D47A1;
-    animation: pop 0.8s ease-out;
-}
-@keyframes pop {
-  0% { transform: scale(0); }
-  70% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-#camera { 
-    border-radius: 12px; 
-    margin-top: 10px; 
-    width: 300px; 
-    height: 300px; 
-    object-fit: cover; 
-}
-#switchCamera {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-    padding: 0;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFD966;
-    color: #0D47A1;
-}
+
+#camera { width: 300px; height: 300px; object-fit: cover; border-radius: 12px; margin-top: 10px; }
+#cameraContainer { display:none; position: relative; }
+
+#switchCamera { position:absolute; bottom:10px; right:10px; width:50px; height:50px; font-size:18px; padding:0; border-radius:50%;
+    display: flex; justify-content: center; align-items: center; background-color: #FFD966; color: #0D47A1;}
 #switchCamera:hover { background-color: #FFE58A; transform: scale(1.1); }
 
-ul#tasks {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 15px;
-    text-align: left;
-}
-ul#tasks li {
-    font-size: 24px;
-    margin: 8px 0;
-}
-@media (max-width: 600px) {
-    h1 { font-size: 24px; }
-    h2, .affirmation, button, .reward, ul#tasks li { font-size: 18px; }
-    #camera { width: 90%; height: auto; aspect-ratio: 1 / 1; }
-    #switchCamera { width: 40px; height: 40px; font-size: 16px; }
+#galleryBtn { position: fixed; top: 20px; left: 20px; width: 50px; height:50px; font-size:18px; border-radius:50%;
+    display:flex; justify-content:center; align-items:center; background-color:#FFD966; color:#0D47A1; border:none; cursor:pointer;}
+#galleryBtn:hover{ background-color:#FFE58A; transform:scale(1.1); }
+
+.reward { display: none; margin-top: 20px; font-size: 24px; color: #0D47A1; animation: pop 0.8s ease-out;}
+@keyframes pop {0% { transform: scale(0);} 70% { transform: scale(1.2);} 100% { transform: scale(1);}
+
+@media (max-width:600px){ 
+    h1{font-size:24px;} 
+    h2{font-size:18px;} 
+    #affirmation, #taskInstruction, ul#tasks li, button { font-size: 18px; }
+    #camera{width:90%; height:auto; aspect-ratio:1/1;} 
+    #switchCamera, #galleryBtn{width:40px; height:40px; font-size:16px;}
 }
 </style>
 </head>
 <body>
-<nav>
-  <a href="index.html"><button>Tilbage til Forside</button></a>
-</nav>
+
+<button id="galleryBtn">📷</button>
 
 <h1>Inner Child Session</h1>
-<div class="affirmation" id="affirmation"></div>
-
-<h2 id="taskInstruction">Opgave vises her</h2>
+<div id="affirmation" class="affirmation">Her kommer dagens opgave</div>
+<h2 id="taskInstruction"></h2>
 <button id="startTaskBtn">Start opgave</button>
 
-<div id="cameraContainer" style="display:none;">
+<div id="cameraContainer">
   <video id="camera" autoplay playsinline></video>
   <button id="takePhoto">Tag billede</button>
   <canvas id="snapshot" width="300" height="300" style="display:none;"></canvas>
+  <button id="switchCamera">🔄</button>
 </div>
 
 <ul id="tasks"></ul>
-
-<div class="reward" id="reward">🎉 Dit indre barn er stolt! ⭐</div>
-
-<button id="switchCamera">🔄</button>
+<div class="reward" id="reward">Dit billede er gemt 🎉</div>
 
 <script>
-// --- Opgaver med specifik fotoinstruktion ---
+// --- Opgaver per session ---
 const taskPool = [
-  "Find et blad udenfor og tag billede",
-  "Find en sten og tag billede",
-  "Find noget blåt og tag billede",
-  "Find noget rundt og tag billede",
-  "Find noget der gør dig glad og tag billede"
+    "Find et blad udenfor",
+    "Find en sten",
+    "Find noget blåt",
+    "Find noget rundt",
+    "Find noget der gør dig glad"
 ];
+let currentTask = "", taskIndex = 0, sessionTasks = [];
 
-let currentTask = "";
+// --- Start session med 3 tilfældige opgaver ---
+function startSession() {
+    sessionTasks = taskPool.sort(()=>0.5-Math.random()).slice(0,3);
+    taskIndex = 0;
+    setNewTask();
+}
 
-// --- Vis ny opgave ---
+// --- Vis næste opgave ---
 function setNewTask() {
-    const idx = Math.floor(Math.random() * taskPool.length);
-    currentTask = taskPool[idx];
+    if(taskIndex >= sessionTasks.length){
+        document.getElementById('affirmation').innerText = "Du har gennemført alle dagens opgaver!";
+        document.getElementById('taskInstruction').innerText = "";
+        document.getElementById('startTaskBtn').style.display="none";
+        document.getElementById('cameraContainer').style.display="none";
+        return;
+    }
+    currentTask = sessionTasks[taskIndex];
     document.getElementById('taskInstruction').innerText = "Opgave: " + currentTask;
     document.getElementById('startTaskBtn').style.display = "inline-block";
     document.getElementById('cameraContainer').style.display = "none";
@@ -146,71 +102,61 @@ function setNewTask() {
 // --- Kamera setup ---
 let video = document.getElementById('camera');
 let useFrontCamera = true;
-
-async function startCamera() {
-  if(window.stream) window.stream.getTracks().forEach(track => track.stop());
-  try {
-    const constraints = { video: { facingMode: useFrontCamera ? "user" : { exact: "environment" } } };
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    window.stream = stream;
-    video.srcObject = stream;
-  } catch(err) {
-    console.error("Kamera fejl:", err);
-    alert("Kamera kunne ikke startes. Prøv at give adgang eller skift browser.");
-  }
+async function startCamera(){
+    if(window.stream) window.stream.getTracks().forEach(track => track.stop());
+    try {
+        const constraints = { video:{ facingMode: useFrontCamera ? "user" : { exact:"environment" } } };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        window.stream = stream;
+        video.srcObject = stream;
+    } catch(err){ alert("Kamera kunne ikke startes."); console.error(err);}
 }
 
 // Start kamera når bruger trykker
 document.getElementById('startTaskBtn').addEventListener('click', ()=>{
     startCamera();
-    document.getElementById('startTaskBtn').style.display = "none";
-    document.getElementById('cameraContainer').style.display = "block";
+    document.getElementById('startTaskBtn').style.display="none";
+    document.getElementById('cameraContainer').style.display="block";
 });
 
 // Skift kamera
 document.getElementById('switchCamera').addEventListener('click', ()=>{
-  useFrontCamera = !useFrontCamera;
-  startCamera();
+    useFrontCamera = !useFrontCamera;
+    startCamera();
 });
 
 // Tag billede
 document.getElementById('takePhoto').addEventListener('click', ()=>{
-    const canvas = document.getElementById('snapshot');
-    const context = canvas.getContext('2d');
-    context.drawImage(video,0,0,canvas.width,canvas.height);
-    const imageData = canvas.toDataURL('image/png');
+    const canvas=document.getElementById('snapshot');
+    const ctx=canvas.getContext('2d');
+    ctx.drawImage(video,0,0,canvas.width,canvas.height);
+    const imageData=canvas.toDataURL('image/png');
 
-    const gallery = JSON.parse(localStorage.getItem('innerChildGallery') || "[]");
-    gallery.push({ date: new Date().toISOString(), image: imageData, task: currentTask });
+    const gallery=JSON.parse(localStorage.getItem('innerChildGallery') || "[]");
+    gallery.push({date:new Date().toISOString(), image:imageData, task:currentTask});
     localStorage.setItem('innerChildGallery', JSON.stringify(gallery));
 
     // Belønning
-    const reward = document.getElementById('reward');
-    reward.style.display = 'block';
-    setTimeout(()=>{ reward.style.display='none'; },3000);
+    const reward=document.getElementById('reward');
+    reward.style.display='block';
+    setTimeout(()=>{reward.style.display='none';},3000);
 
-    // Tilfældige opgaver under video
-    const tasks = getRandomTasks();
-    const ul = document.getElementById('tasks');
-    ul.innerHTML = "";
-    tasks.forEach(t=>{
-        const li = document.createElement('li');
-        li.textContent = "⭐ " + t;
-        ul.appendChild(li);
-    });
-
-    // Ny foto-opgave
+    // Gå videre til næste opgave
+    taskIndex++;
     setNewTask();
 });
 
-// --- Tilfældige opgaver under kamera ---
-function getRandomTasks() {
-    let shuffled = taskPool.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
-}
+// Galleri visning via knap
+document.getElementById('galleryBtn').addEventListener('click', ()=>{
+    const gallery=JSON.parse(localStorage.getItem('innerChildGallery') || "[]");
+    if(gallery.length===0){ alert("Galleri er tomt."); return; }
+    let galleryText = "Gemte billeder:\n";
+    gallery.forEach((g,i)=>{ galleryText+=`${i+1}. ${g.task} - ${g.date}\n`; });
+    alert(galleryText);
+});
 
-// --- Start med første opgave ---
-setNewTask();
+// Start session ved load
+startSession();
 </script>
 </body>
 </html>
